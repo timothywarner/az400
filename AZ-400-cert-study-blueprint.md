@@ -9,18 +9,23 @@
 
 ## Theoretical Knowledge
 * [Azure DevOps Documentation](https://docs.microsoft.com/en-us/azure/devops/)
+* [Azure Mentor AZ-400 Study Guide](https://github.com/AzureMentor/Azure-AZ-400-Study-Guide)
+* [Azure Greg's AZ-400 Study Notes](https://gregorsuttie.com/2018/10/27/azure-devops-az-400-exam-study-notes/)
+* [Stanislas.io AZ-400 Study Guide](https://stanislas.io/2019/07/26/preparation-guide-for-microsoft-az-400-microsoft-azure-devops-solutions-certification/)
+* [vWorld.nl AZ-400 Study Guide](https://vworld.nl/?page_id=5022)
 *
-
 ## Hands-on Skill Building
 * [Azure DevOps Labs](https://azuredevopslabs.com/)
 * [Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net/)
+* [Microsoft Learn](https://docs.microsoft.com/en-us/learn/browse/?roles=devops-engineer)
 * [Linux Academy](https://linuxacademy.com/course/preparing-for-the-az-400-azure-dev-ops-exam/)
 * [Cloud Academy](https://cloudacademy.com/)
 
 ## Practice Exams
 * [Whizlabs AZ-400](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
 * [MeasureUp AZ-400](https://www.measureup.com/az-400-microsoft-azure-devops-solutions.html)
-
+* [Udemy](https://www.udemy.com/course/az-400-microsoft-azure-devops-solutions-practice-tests-p/?ranMID=39197&ranEAID=vg5g08qPHOY&ranSiteID=vg5g08qPHOY-T7nCKbKGMzNi3PB19sMwpA&LSNPUBID=vg5g08qPHOY)
+*
 ## Microsoft Certification Info
 * [AZ-400 Exam Page](https://docs.microsoft.com/en-us/learn/certifications/exams/az-400)
 * [Microsoft Certification Policies & FAQs](https://www.microsoft.com/en-us/learning/certification-exam-policies.aspx)

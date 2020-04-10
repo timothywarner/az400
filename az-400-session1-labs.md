@@ -1,37 +1,25 @@
-# AZ-301 Session 1 Labs
+# AZ-400 Session 1 Labs
 
-# Design for Identity and Security
-  * Authentication
-    + App registrations
-    + MFA (App Access Panel)
-    + Hybrid Identity (Azure AD Connect)
-  * Authorization
-    + RBAC (AAD and resource)
-    + AAD PIM
-  * Monitoring AAD
+## Source Control
+  * Migrating TFVC to Git
+  * Authenticating to Git
 
-# Design a Data Platform Solution
-  * Relational vs non-relational
-  * Managed vs unmanaged VM disks
-  * Storage accounts
-    + SSE
-    + Snapshot
-    + Data tiering
-    + Soft delete
-  * Azure SQL Database
-    + Pricing/elastic pools
-    + Replication
-    + Data protection across lifecycle
-  * Cosmos DB
-    + Data availability and consistency
-    + At-rest data encryption
-    + Auditing
-  * Data flows
-    + Data Lake
-    + Data Factory
-  * Azure Information Protection
+## Build Infrastructure
+  * Pipelines
+  * Private agents
+  * App config & secrets
+  * Build triggers
+  * Integrations
 
-## Exam Prep Guidance
+## Continuous Integration
+  * Code quality
+  * Security policies / analysis tools
 
-* Item types
-* Practice test software/bundles
+## Container Build Strategy
+  * Azure Container Registry
+  *
+
+## Relase Management Workflow
+  * sdf
+
+

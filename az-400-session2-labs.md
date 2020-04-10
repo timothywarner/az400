@@ -1,30 +1,16 @@
-# AZ-301 Session 2 Labs
+# AZ-400 Session 2 Labs
 
-## Disaster Recovery / High Availability Strategy Design
+## Deployment Patterns
+  * Blue green, canary, etc
 
-* Site recovery
-* ASR / Azure Migrate
-* High availability
-  * Virtual machines
-  * App Service scaling
-  * CDN (oreillygpstorage/public)
-  * Load balancing
-    + Traffic Manager (oreillywebapps)
-    + Front Door
-  * Monitoring
-    + Metrics
-    + Alerts
+## Dependency Management
+  * Packages and artifacts
 
-## Deployment, Migration, and Integration Design
+## Infrastructure and Config Management
+  * IaC
+  * ARM Templates
+  * DSC and Azure Automation
 
-* Design deployments
-  * ARM template design
-  * API Management (policies)
-* Design migrations
-  * Server migration
-  * Database migration
-
-## Exam Prep Guidance
-
-* Item types
-* Remote online testing
+## System Feedback Mechanisms
+  * Integrations
+  * Dashboards
