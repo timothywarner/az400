@@ -1,9 +1,8 @@
 # AZ-400 Session 1 Labs
 
 ## Source Control
-  * Migrating TFVC to Git
   * Authenticating to Git
-  * Branching strategies (feature isolation)
+  * Branching strategies (feature branches / pull req)
   * Branch security
 
 ## Build Infrastructure
@@ -39,6 +38,3 @@
     * UI testing Selenium
   * Security policies / analysis tools
   * "squash merge"
-
-
-
