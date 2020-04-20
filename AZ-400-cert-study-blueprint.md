@@ -31,3 +31,10 @@
 * [Microsoft Certification Policies & FAQs](https://www.microsoft.com/en-us/learning/certification-exam-policies.aspx)
 * [Online Proctored Testing](https://www.microsoft.com/en-us/learning/online-exams.aspx)
 * [Microsoft Certification Exam Offers](https://www.microsoft.com/en-us/learning/offers.aspx)
+
+## Classroom Content Repos
+* [Mike Pfeiffer's Node/Express App](https://github.com/mikepfeiffer/node-express-azure)
+* [Mike Pfeiffer's ASP.NET Core Web App](https://github.com/mikepfeiffer/AspNetCoreWebApplication)
+* [Mike Pfeiffer's Second ASP.NET Core Web App](https://github.com/CloudSkills/aspnet-core-demo)
+* [Azure DevOps Project Scaffolding Script](https://github.com/Azure/azure-devops-cli-extension/tree/master/examples/Scaffolding)
+
