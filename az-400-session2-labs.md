@@ -1,5 +1,43 @@
 # AZ-400 Session 2 Labs
 
+1. Review Azure Pipelines
+   * Test CI/CD pipeline (Node app)
+   * Code scanning (Whitesource, Sonar)
+   * Scaffolding project
+
+2. Azure Artifacts
+   * Create and consume new Nuget package feed
+
+3. Infrastructure
+   * ARM templates
+   * Azure Automation DSC
+
+4. Test Plans and Feedback
+   * Test Plans/ Feedback extension
+   * MS Teams service hook
+   * Dashboard & key terms (lead, cycle, burndown)
+
+5. Exam Strategy
+   * Practice questions
+   * Online testing process
+   * After the exam
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Release Strategy
   * Release management tools
   * Testing
