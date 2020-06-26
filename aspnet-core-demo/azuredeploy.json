@@ -1,0 +1,300 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+      "webAppName": {
+          "defaultValue": "orwebapp7044",
+          "type": "string",
+          "metadata": {
+              "description": "Enter a globally unique hostname for your web app"
+          }
+      },
+      "servicePlanName": {
+          "defaultValue": "",
+          "type": "String"
+      },
+      "sqlServerName": {
+         "type": "string",
+         "metadata": {
+              "description": "Enter a globally unique hostname for your SQL server"
+          }
+      },
+      "keyVaultName": {
+        "defaultValue": "orkeyvault7044",
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the name of the key vault."
+        }
+      },
+      "objectId": {
+        "defaultValue": "6d5f4716-b2c4-4ada-91a6-9181062bd4db",
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. Get it by using Get-AzADUser or Get-AzADServicePrincipal cmdlets."
+        }
+      },
+      "adminUserName": {
+         "type": "string",
+         "metadata": {
+              "description": "Enter a username for SQL admin"
+          }
+      },
+      "adminPassword": {
+         "type": "securestring",
+         "metadata": {
+              "description": "Enter a password for SQL admin"
+          }
+      }
+  },
+  "variables": {},
+  "resources": [
+      {
+          "type": "Microsoft.Web/serverfarms",
+          "apiVersion": "2018-02-01",
+          "name": "[parameters('servicePlanName')]",
+          "location": "[resourceGroup().location]",
+          "sku": {
+              "name": "S1",
+              "tier": "Standard",
+              "size": "S1",
+              "family": "S",
+              "capacity": 1
+          },
+          "kind": "app",
+          "properties": {
+              "perSiteScaling": false,
+              "maximumElasticWorkerCount": 1,
+              "isSpot": false,
+              "reserved": false,
+              "isXenon": false,
+              "hyperV": false,
+              "targetWorkerCount": 0,
+              "targetWorkerSizeId": 0
+          }
+      },
+      {
+          "type": "Microsoft.Web/sites",
+          "apiVersion": "2018-11-01",
+          "name": "[parameters('webAppName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[resourceId('Microsoft.Web/serverfarms', parameters('servicePlanName'))]"
+          ],
+          "kind": "app",
+          "properties": {
+              "enabled": true,
+              "hostNameSslStates": [
+                  {
+                      "name": "[concat(parameters('webAppName'), '.azurewebsites.net')]",
+                      "sslState": "Disabled",
+                      "hostType": "Standard"
+                  },
+                  {
+                      "name": "[concat(parameters('webAppName'), '.scm.azurewebsites.net')]",
+                      "sslState": "Disabled",
+                      "hostType": "Repository"
+                  }
+              ],
+              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('servicePlanName'))]",
+              "siteConfig": {
+                "connectionStrings": [
+                    {
+                        "name": "RazorPagesMovieContext",
+                        "connectionString": "[concat('Server=tcp:', parameters('sqlServerName'),  '.database.windows.net,1433;Initial Catalog=MyAppDb;Persist Security Info=False;User ID=', parameters('adminUserName'), ';Password=', parameters('adminPassword'), ';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]",
+                        "type": "SQLAzure"
+                    }
+                ]
+              },
+              "reserved": false,
+              "isXenon": false,
+              "hyperV": false,
+              "scmSiteAlsoStopped": false,
+              "clientAffinityEnabled": true,
+              "clientCertEnabled": false,
+              "hostNamesDisabled": false,
+              "containerSize": 0,
+              "dailyMemoryTimeQuota": 0,
+              "httpsOnly": false,
+              "redundancyMode": "None"
+          }
+      },
+      {
+          "type": "Microsoft.Web/sites/config",
+          "apiVersion": "2018-11-01",
+          "name": "[concat(parameters('webAppName'), '/web')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
+          ],
+          "properties": {
+              "numberOfWorkers": 1,
+              "defaultDocuments": [
+                  "Default.htm",
+                  "Default.html",
+                  "Default.asp",
+                  "index.htm",
+                  "index.html",
+                  "iisstart.htm",
+                  "default.aspx",
+                  "index.php",
+                  "hostingstart.html"
+              ],
+              "netFrameworkVersion": "v4.0",
+              "phpVersion": "5.6",
+              "requestTracingEnabled": false,
+              "remoteDebuggingEnabled": false,
+              "httpLoggingEnabled": false,
+              "logsDirectorySizeLimit": 35,
+              "detailedErrorLoggingEnabled": false,
+              "publishingUsername": "[concat('$', parameters('webAppName'))]",
+              "scmType": "None",
+              "use32BitWorkerProcess": true,
+              "webSocketsEnabled": false,
+              "alwaysOn": true,
+              "managedPipelineMode": "Integrated",
+              "virtualApplications": [
+                  {
+                      "virtualPath": "/",
+                      "physicalPath": "site\\wwwroot",
+                      "preloadEnabled": true
+                  }
+              ],
+              "loadBalancing": "LeastRequests",
+              "experiments": {
+                  "rampUpRules": []
+              },
+              "autoHealEnabled": false,
+              "localMySqlEnabled": false,
+              "ipSecurityRestrictions": [
+                  {
+                      "ipAddress": "Any",
+                      "action": "Allow",
+                      "priority": 1,
+                      "name": "Allow all",
+                      "description": "Allow all access"
+                  }
+              ],
+              "scmIpSecurityRestrictions": [
+                  {
+                      "ipAddress": "Any",
+                      "action": "Allow",
+                      "priority": 1,
+                      "name": "Allow all",
+                      "description": "Allow all access"
+                  }
+              ],
+              "scmIpSecurityRestrictionsUseMain": false,
+              "http20Enabled": false,
+              "minTlsVersion": "1.2",
+              "ftpsState": "AllAllowed",
+              "reservedInstanceCount": 0
+          }
+      },
+      {
+          "type": "Microsoft.Web/sites/hostNameBindings",
+          "apiVersion": "2018-11-01",
+          "name": "[concat(parameters('webAppName'), '/', parameters('webAppName'), '.azurewebsites.net')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
+          ],
+          "properties": {
+              "siteName": "[parameters('webAppName')]"
+          }
+      },
+      {
+          "name": "[parameters('sqlServerName')]",
+          "type": "Microsoft.Sql/servers",
+          "apiVersion": "2015-05-01-preview",
+          "location": "[resourceGroup().location]",
+          "tags": {
+              "displayName": "[parameters('sqlServerName')]"
+          },
+          "properties": {
+              "administratorLogin": "[parameters('adminUserName')]",
+              "administratorLoginPassword": "[parameters('adminPassword')]"
+          },
+          "resources": [
+              {
+                  "type": "firewallRules",
+                  "apiVersion": "2015-05-01-preview",
+                  "dependsOn": [
+                      "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
+                  ],
+                  "location": "[resourceGroup().location]",
+                  "name": "AllowAllWindowsAzureIps",
+                  "properties": {
+                      "startIpAddress": "0.0.0.0",
+                      "endIpAddress": "0.0.0.0"
+                  }
+              }
+          ]
+      },
+      {
+          "name": "[concat(parameters('sqlServerName'), '/AppDb')]",
+          "type": "Microsoft.Sql/servers/databases",
+          "apiVersion": "2014-04-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+              "displayName": "AppDb"
+          },
+          "dependsOn": [
+              "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
+          ],
+          "properties": {
+              "collation": "SQL_Latin1_General_CP1_CI_AS",
+              "edition": "Basic",
+              "maxSizeBytes": "1073741824",
+              "requestedServiceObjectiveName": "Basic"
+          }
+      },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2016-10-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": true,
+        "enabledForTemplateDeployment": true,
+        "tenantId": "[subscription().tenantId]",
+        "accessPolicies": [
+          {
+            "objectId": "[parameters('objectId')]",
+            "tenantId": "[subscription().tenantId]",
+            "permissions": {
+              "keys": [
+                "list",
+                "get"
+              ],
+              "secrets": [
+                "list",
+                "get"
+              ]
+            }
+          }
+        ],
+        "sku": {
+          "name": "Standard",
+          "family": "A"
+        },
+        "networkAcls": {
+            "defaultAction": "Allow",
+            "bypass": "AzureServices"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('keyVaultName'), '/RazorPagesMovieContext')]",
+      "apiVersion": "2015-06-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[concat('Server=tcp:', parameters('sqlServerName'),  '.database.windows.net,1433;Initial Catalog=MyAppDb;Persist Security Info=False;User ID=', parameters('adminUserName'), ';Password=', parameters('adminPassword'), ';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"
+      }
+    }
+  ]
+}

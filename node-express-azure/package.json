@@ -1,0 +1,22 @@
+{
+  "name": "node-express-azure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "npm install",
+    "test": "mocha --exit",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "express-handlebars": "3.0.0"
+  },
+  "devDependencies": {
+    "mocha": "5.2.0",
+    "chai": "4.2.0",
+    "chai-http": "4.2.0"
+  }
+}
