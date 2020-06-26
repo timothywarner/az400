@@ -10,3 +10,5 @@ Register-AzAutomationDscNode  `
    -AzureVMName "vm1-prod" `
    -ResourceGroupName "DSC" `
    -NodeConfigurationName "config.webserver"
+
+$PSVersionTable

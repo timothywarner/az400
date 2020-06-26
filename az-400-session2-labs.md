@@ -1,70 +1,34 @@
 # AZ-400 Session 2 Labs
 
-1. Review Azure Pipelines
-   * Test CI/CD pipeline (Node app)
-   * Code scanning (Whitesource, Sonar)
-   * Scaffolding project
+## Azure DevOps Identity and Security
 
-2. Azure Artifacts
-   * Create and consume new Nuget package feed
+* MFA
+* Azure AD Conditional Access
+* Azure AD PIM
 
-3. Infrastructure
-   * ARM templates
-   * Azure Automation DSC
+## Application Infrastructure
 
-4. Test Plans and Feedback
-   * Test Plans/ Feedback extension
-   * MS Teams service hook
-   * Dashboard & key terms (lead, cycle, burndown)
-
-5. Exam Strategy
-   * Practice questions
-   * Online testing process
-   * After the exam
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Release Strategy
-  * Release management tools
-  * Testing
-  * Approvals and gates
-    * Deployment queue settings
-  * Blue/green/canary/dark
-  * Database DACPAC
+* ARM templates
+* Azure Automation
+  * DSC
+  * Runbooks
+* Infrastructure Monitoring
+* Alerting
 
 ## Dependency Management
-  * Packages and artifacts
-  * Azure Artifacts Credential Provider
-  * Open source vulnerability scans
-  * Versioning
-  * Package feed upstream sources
 
-## Infrastructure and Config Management
-  * IaC
-  * ARM Templates (VS, VSC, Portal, CLI, etc)
-  * DSC and Azure Automation
+* Azure Artifacts
 
-## System Feedback Mechanisms
-  * User feedback tools
-  * Application Map App Insights (failure HTTP codes)
-  * Telemetry
-  * Integrations
-  * Dashboards
-  * Comms tools (Slack, Teams)
+## Continuous Feedback
+
+* Service Hooks (Teams)
+* Logging
+* Alerting
+* Test Plans
 
 ## AZ-400 Exam Strategy
-  * Practice questions
+
+* Item types
+* Online testing process
+* After the exam
+* Practice questions

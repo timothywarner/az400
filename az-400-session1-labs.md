@@ -1,40 +1,41 @@
 # AZ-400 Session 1 Labs
 
+## Introductory Stuff
+
+* What is DevOps?
+* Create an Azure DevOps org
+  * Configure org settings
+* Create a project (NodeDemoApp)
+  * Import the code/build definition
+  * Configure project settings
+  * Configure self-hosted agents
+
 ## Source Control
-  * Authenticating to Git
-  * Branching strategies (feature branches / pull req)
-  * Branch security
 
-## Build Infrastructure
-  * Pipelines
-  * Private agents
-    * Bitbucket external git, self-hosted agent
-  * App config & secrets
-  * Build triggers
-  * Integrations
-    * Jenkins service hook
-  * Containers / multi-stage builds
+* Branching strategies (feature branches / GitHub Flow)
+* Branch security
+  * Pull requests
 
-## Application Config and Secrets
-  * Secrets, tokens, and certificates
-  * Azure Key Vault
-  * Personal Access Tokens
+## Build Pipelines
 
+* Classic vs YAML (Parts Unlimited)
+* Docker multi-stage builds (My Shuttle Demo)
+
+## App Configs and Secrets
+
+* Personal Access Tokens
+* Code quality/Static code analysis
+  * Whitesource Bolt (Whitesource Demo))
+* Azure Key Vault (Key Vault Demo)
+*
 ## Mobile DevOps
-  * Visual Studio App Center
-    * .p12 certificates
-  * VS Test Feedback Tool
 
-## Continuous Integration
-  * Build strategy
-    * Secure Development Lifecycle (SDL) guidelines
-    * Variable groups
-  * Code quality tests
-    * Code quality: Maven, PMD
-    * Code coverage Cobertura/JaCoCo
-    * Code inspection: SonarCloud/SonarQube (service endpoint)
-    * Code analyzer: Gradle/Maven
-    * Open source checking: Whitesource Bolt, Black Duck
-    * UI testing Selenium
-  * Security policies / analysis tools
-  * "squash merge"
+  * App Center Demo Generator
+  *
+## Release Pipelines
+
+* NodeDemo release
+  * Approvals
+  * Gates
+* Parts Unlimited release
+* Deployment Groups release
