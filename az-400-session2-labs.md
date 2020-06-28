@@ -26,6 +26,12 @@
 * Alerting
 * Test Plans
 
+## Continuous Monitoring
+
+* sdasdf
+
+
+
 ## AZ-400 Exam Strategy
 
 * Item types

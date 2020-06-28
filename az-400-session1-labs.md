@@ -5,7 +5,7 @@
 * What is DevOps?
 * Create an Azure DevOps org
   * Configure org settings
-* Create a project (NodeDemoApp)
+* Create a project (*NodeDemoApp*)
   * Import the code/build definition
   * Configure project settings
   * Configure self-hosted agents
