@@ -5,9 +5,13 @@
 * What is DevOps?
 * Create an Azure DevOps org
   * Configure org settings
+    * Billing
+    * Service Connections
+    * Users
 * Create a project (*NodeDemoApp*)
   * Import the code/build definition
   * Configure project settings
+    * Users
   * Configure self-hosted agents
 
 ## Source Control
@@ -27,14 +31,10 @@
 * Code quality/Static code analysis
   * Whitesource Bolt (Whitesource Demo))
 * Azure Key Vault (Key Vault Demo)
-*
-## Mobile DevOps
 
-  * App Center Demo Generator
-  *
 ## Release Pipelines
 
-* NodeDemo release
+* ReleaseGates project
   * Approvals
   * Gates
 * Parts Unlimited release
