@@ -2,18 +2,23 @@
 
 ## Azure DevOps Identity and Security
 
+* Service connection security principal
 * MFA
 * Azure AD Conditional Access
 * Azure AD PIM
+* Add new user to Azure DevOps user & team member
 
 ## Application Infrastructure
 
+* Docker DevOps project (MyShuttle)
+  * Multi-stage builds
 * ARM templates
 * Azure Automation
   * DSC
   * Runbooks
 * Infrastructure Monitoring
-* Alerting
+* Alerts
+* Log Analytics
 
 ## Dependency Management
 
@@ -22,19 +27,10 @@
 ## Continuous Feedback
 
 * Service Hooks (Teams)
-* Logging
-* Alerting
 * Test Plans
-
-## Continuous Monitoring
-
-* sdasdf
-
-
 
 ## AZ-400 Exam Strategy
 
-* Item types
 * Online testing process
 * After the exam
 * Practice questions

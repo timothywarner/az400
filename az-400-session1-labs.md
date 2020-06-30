@@ -35,6 +35,8 @@
   * Whitesource Bolt (Whitesource project))
   * SonarQube (SonarQube project)
 * Azure Key Vault (Key Vault project)
+* Integrations
+  * Jenkins CI
 
 ## Release Pipelines
 
