@@ -12,6 +12,9 @@
 
 * Docker DevOps project (MyShuttle)
   * Multi-stage builds
+    * Whitesource
+  * Add SonarQube
+    * - Service connection
 * ARM templates
 * Azure Automation
   * DSC
