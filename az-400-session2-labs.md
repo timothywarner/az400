@@ -1,20 +1,7 @@
 # AZ-400 Session 2 Labs
 
-## Azure DevOps Identity and Security
+## Configuration Management
 
-* Service connection security principal
-* MFA
-* Azure AD Conditional Access
-* Azure AD PIM
-* Add new user to Azure DevOps user & team member
-
-## Application Infrastructure
-
-* Docker DevOps project (MyShuttle)
-  * Multi-stage builds
-    * Whitesource
-  * Add SonarQube
-    * - Service connection
 * ARM templates
 * Azure Automation
   * DSC

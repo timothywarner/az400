@@ -1,55 +1,38 @@
 # AZ-400 Session 1 Labs
 
-## Introductory Stuff
+## DevOps and Azure DevOps Overview
 
-* What is DevOps?
-* Create an Azure DevOps org
-  * Configure org settings
-    * Billing
-    * Service Connections
-    * Users
-    * Extensions
-    * Agent Pools
-* Create a project (*NodeDemoApp*)
-  * Import the code/build definition
-  * Configure project settings
-    * Users
+* About DevOps
+* AzDo org/project structure
+* Org/project settings
+  * Create project
+  * Invite user
 
-## Source Control
+## Source Code Control
 
-* Branching strategies (feature branches / GitHub Flow)
-* Branch security
-  * Pull requests
-  * Approvals
+* TFVC vs Git
+* Git setup
+* Git clone, push, pull
+* Branch policies
+  * Approval
+* Pull request
+* GitHub
+  * Fork vs Clone
+  * Pull request
 
-## Build Pipelines
+## CI/CD
 
-* ASP.NET Core Demo Movie App
-  * Variable groups
-* Docker multi-stage builds (My Shuttle Demo)
-
-## App Configs and Secrets
-
-* Personal Access Tokens
-* Code quality/Static code analysis
-  * Whitesource Bolt (Whitesource project))
-  * SonarQube (SonarQube project)
-* Azure Key Vault (Key Vault project)
+* Docker multi-stage builds
+* Classic vs YAML
+  * YAML multi-stage pipelines
+* GitHub Actions
+* Secrets
 * Integrations
-  * Jenkins CI
-
-## Release Pipelines
-
-* New NodeDemo project
-  * Dev environment
-    * Deploy Azure App Service to Slot task
-  * Prod environment
-    * Swap Slots task
-* ReleaseGates project
-  * Approvals
+  * Whitesource
+  * Sonarqube
+  * Jenkins
+* Releases
   * Gates
-* Parts Unlimited release
-* Deployment Groups release
 
 ## AZ-400 Exam Prep
 
