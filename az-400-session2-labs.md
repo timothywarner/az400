@@ -1,14 +1,27 @@
 # AZ-400 Session 2 Labs
 
+## Take Care of Business
+
+* MS Learn
+  * SRE module
+
+* Release gates
+  * Azure Policy
+  * Alerts
+
+## Infrastructure Monitoring
+* Alerts
+* Log Analytics
+
 ## Configuration Management
 
 * ARM templates
 * Azure Automation
   * DSC
   * Runbooks
-* Infrastructure Monitoring
-* Alerts
-* Log Analytics
+
+    1. Runbook that starts VM
+    2. Alert that runs runbook on vm shutdown
 
 ## Dependency Management
 
@@ -16,6 +29,7 @@
 
 ## Continuous Feedback
 
+* Azure Boards Dashboard views
 * Service Hooks (Teams)
 * Test Plans
 
