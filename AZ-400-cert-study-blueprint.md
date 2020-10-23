@@ -25,12 +25,14 @@
 * [Microsoft Learn](https://docs.microsoft.com/en-us/learn/browse/?roles=devops-engineer)
 * [Linux Academy](https://linuxacademy.com/course/preparing-for-the-az-400-azure-dev-ops-exam/)
 * [Cloud Academy](https://cloudacademy.com/)
+* [Parts Unlimited Hands-on Labs](https://microsoft.github.io/PartsUnlimited/)
+
 
 ## Practice Exams
 
 * [Whizlabs AZ-400](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
 * [MeasureUp AZ-400](https://www.measureup.com/az-400-microsoft-azure-devops-solutions.html)
-* [Udemy](https://www.udemy.com/course/az-400-microsoft-azure-devops-solutions-practice-tests-p/?ranMID=39197&ranEAID=vg5g08qPHOY&ranSiteID=vg5g08qPHOY-T7nCKbKGMzNi3PB19sMwpA&LSNPUBID=vg5g08qPHOY)
+
 
 ## Microsoft Certification Info
 
@@ -38,6 +40,8 @@
 * [Microsoft Certification Policies & FAQs](https://www.microsoft.com/en-us/learning/certification-exam-policies.aspx)
 * [Online Proctored Testing](https://www.microsoft.com/en-us/learning/online-exams.aspx)
 * [Microsoft Certification Exam Offers](https://www.microsoft.com/en-us/learning/offers.aspx)
+* [Tim's online testing helper video](https://www.youtube.com/watch?v=myf6r5nulj0&feature=youtu.be)
+
 
 ## Classroom Content Repos
 
