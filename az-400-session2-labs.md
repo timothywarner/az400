@@ -1,27 +1,34 @@
 # AZ-400 Session 2 Labs
 
-## Take Care of Business
+## Review Pipelines
 
-* MS Learn
-  * SRE module
+* Parts-GUI
+  * Dashboards & Vocab
+  * Run build
+  * Set release pipeline to one stage
+  * Approval pre- and alert post gates
 
-* Release gates
-  * Azure Policy
-  * Alerts
 
-## Infrastructure Monitoring
-* Alerts
-* Log Analytics
+* Show other projects
+  * Whitesource
+  * MyShuttle
+
+AzureDevOpsLabs
 
 ## Configuration Management
 
 * ARM templates
+  * Visual Studio
 * Azure Automation
   * DSC
   * Runbooks
 
-    1. Runbook that starts VM
-    2. Alert that runs runbook on vm shutdown
+
+## Infrastructure Monitoring
+* Application Insights
+* Alerts
+* Log Analytics
+
 
 ## Dependency Management
 
@@ -29,8 +36,8 @@
 
 ## Continuous Feedback
 
-* Azure Boards Dashboard views
 * Service Hooks (Teams)
+
 * Test Plans
 
 ## AZ-400 Exam Strategy
@@ -39,3 +46,4 @@
 * After the exam
 * Practice questions
   * Whizlabs
+
