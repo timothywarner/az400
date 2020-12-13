@@ -1,0 +1,108 @@
+AZ-400 Crash Course Outline
+
+# DAY 1
+
+* Develop an SRE strategy (5-10%)
+    * Template deployment
+        * linked templates
+        * Key Vault integration
+
+    * Configuration management
+        * Azure Automation DSC (PowerShell)
+        * Custom Script Extension
+    * Containers
+        * ACR
+            * Trusted images
+        * ACI
+        * AKS
+    * App hosting options
+        * App Service
+            * Managed identity
+        * Function App
+        * Logic App automation
+    * Alerts
+        * rules
+        * webhooks
+        * ITSM Connector
+
+* Develop a security and compliance plan (10-15%)
+    * Continuous Security Validation
+        * https://timw.info/i0y
+    * Key Vault
+            * RBAC
+            * Advanced access policies
+            * Secrets permissions
+    * Storage Account
+            * Managed storage account
+            * SAS vs shared key authentication
+    * Azure DevOps RBAC
+        Reader and Service Account roles
+        * Basic vs Stakeholder access levels
+        * VS App Center distribution groups
+    * Policy
+        * Conditional Access device policy
+        * Interpret Azure Policy conditions and actions
+
+* Manage source control (10-15%)
+    * TFS vs Git vs Subversion
+    * TFS Server to AzDo migration
+    * Import repo from GitHub
+    * Branch policies
+    * Squash merge
+
+* Develop an instrumentation strategy (5-10%)
+    * App Insights
+        * app map
+        * user flows
+        * impact
+        * users
+    * Log Analytics
+
+# DAY 2
+
+* Define and implement CI (20-25%)
+    * Maven & PMD
+    * Self-hosted agent & external Git connection
+    * Whitesource Bolt
+    * Use Jenkins for Azure Repos
+    * Agent pool image types
+    * Cobertura code coverage
+    * Variable group (Key Vault)
+    * PowerShell task Get-AzureKeyVaultSecret
+    * Octopus Deploy/Tentacle
+    * SonarCloud static code analysis (when to invoke task in build pipeline)
+    * ACR webhook
+    * Docker multi-stage builds (Dockerfile syntax)
+    * SonarQube static analyzer
+    * Docker image scanning scheduled task
+    * Linked ARM templates
+    * Branch and path filters
+    * Selenium UI testing
+    * Black Duck
+
+* Define and implement a CD and RM strategy (10-15%)
+    * Artifacts new feed for public access
+    * upstream sources
+    * How to create and connect to feed
+    * Helm & Tiller deploy charts to AKS
+    * Pre- and post- conditions/gates
+    * Interpret a GUI release pipeline with triggers
+    * Deployment groups
+    * Deployments (blue/green, canary, rolling)
+    * App Service / Function deployment slots for rolling upgrades
+    * DACPAC for Azure SQL DB deployment tasks
+    * Artifacts NPM .nmprc files
+    * iOS app center cert .p12
+    * Run ACI images in AKS (YAML, kubectl, helm)
+    * Register devices in Apple Developer portal
+    * Set release stage retention policies
+    * Package feed permissions (Reader, Collaborator, Contributor, Owner)
+    * Azure Artifacts Credential Provider
+
+* Facilitate communication and collaboration (10-15%)
+    * Teams and Slack service hooks
+    * Dashboard (burndown, cycle, lead, velocity)
+    * Work processes (relation to Kanban)
+    * Create dependency graph for application
+    * Continuous Assurance
+    * Test & Feedback extension
