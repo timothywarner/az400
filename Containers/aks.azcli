@@ -32,3 +32,13 @@ az sql server create -l eastus -g akshandsonlab -n sqlaz400svr001 -u tim -p P2ss
 
 # Create database
 az sql db create -g akshandsonlab -s sqlaz400svr001 -n mhcdb --service-objective S0
+
+# See pods running in AKS
+az aks get-credentials --resource-group akshandsonlab --name akslab7201
+
+kubectl get pods
+
+# Get external IP and test in browser
+kubectl get service mhc-front --watch
+
+# Check resource view in portal (AKS settings > Services and ingresses)
