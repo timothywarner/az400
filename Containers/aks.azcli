@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Deploying a multi-container application to Azure Kubernetes Services
+
+# https://azuredevopslabs.com/labs/vstsextend/kubernetes/
+
+# Get the latest K8S version
+version=$(az aks get-versions -l eastus --query 'orchestrators[-1].orchestratorVersion' -o tsv)
+
+# Create resource group
+az group create --name akshandsonlab --location eastus
+
+# Create ACR
+az acr create --resource-group akshandsonlab --name aksholaz400 --sku Standard --location eastus
+
+# Create AKS cluster
+ az aks create --resource-group akshandsonlab --name akslab7201 --enable-addons monitoring --kubernetes-version $version --generate-ssh-keys --location eastus
+
+# Grant AKS-generated service principal access to ACR
+
+ # Get the id of the service principal configured for AKS
+CLIENT_ID=$(az aks show --resource-group akshandsonlab --name akslab7201 --query "servicePrincipalProfile.clientId" --output tsv)
+
+ # Get the ACR registry resource id
+ACR_ID=$(az acr show --name aksholaz400 --resource-group akshandsonlab --query "id" --output tsv)
+
+# Create role assignment
+az role assignment create --assignee $CLIENT_ID --role acrpull --scope $ACR_ID
+
+# Create Azure SQL Server
+az sql server create -l eastus -g akshandsonlab -n sqlaz400svr001 -u tim -p P2ssw0rd1234!
+
+# Create database
+az sql db create -g akshandsonlab -s sqlaz400svr001 -n mhcdb --service-objective S0
