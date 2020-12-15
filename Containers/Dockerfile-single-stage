@@ -1,0 +1,20 @@
+FROM node:10
+
+# set the work directory
+WORKDIR /root/
+
+COPY package*.json ./
+
+# copy the UI static assets
+COPY dist ./WebApp/dist
+
+# RUN npm install for node js dependencies
+RUN npm install
+
+# copy index.js file
+COPY index.js .
+
+EXPOSE 3070
+
+ENTRYPOINT ["node"]
+CMD ["index.js"]
