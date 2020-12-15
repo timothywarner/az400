@@ -12,7 +12,7 @@ AZ-400 Crash Course Outline
         * Custom Script Extension
     * Containers
         * ACR
-            * Trusted images
+            * Trusted (signed) images
         * ACI
         * AKS
     * App hosting options
@@ -42,6 +42,8 @@ AZ-400 Crash Course Outline
     * Policy
         * Conditional Access device policy
         * Interpret Azure Policy conditions and actions
+    * Continuous assurance
+        * Secure DevOps Kit for Azure (https://timw.info/9s5)
 
 * Manage source control (10-15%)
     * TFS vs Git vs Subversion
@@ -61,48 +63,74 @@ AZ-400 Crash Course Outline
 # DAY 2
 
 * Define and implement CI (20-25%)
-    * Maven & PMD
-    * Self-hosted agent & external Git connection
-    * Whitesource Bolt
-    * Use Jenkins for Azure Repos
-    * Agent pool image types
-    * Cobertura code coverage
-    * Variable group (Key Vault)
-    * PowerShell task Get-AzureKeyVaultSecret
-    * Octopus Deploy/Tentacle
-    * SonarCloud static code analysis (when to invoke task in build pipeline)
-    * ACR webhook
-    * Docker multi-stage builds (Dockerfile syntax)
-    * SonarQube static analyzer
-    * Docker image scanning scheduled task
-    * Linked ARM templates
+    * Build agents
+        * Self-hosted agent & external Git connection
+        * Agent pool image types
+    * Third-party integrations
+        * Whitesource Bolt
+        * Maven & PMD
+        * Use Jenkins for Azure Repos
+        * Cobertura code coverage
+        * Octopus Deploy & Tentacle
+        * SonarCloud
+        * SonarQube
+        * Black Duck
+        * Selenium
+    * Variable group
+        Key Vault
+    * Containers
+        * ACR webhook
+        * Docker multi-stage builds (Dockerfile syntax)
+        * Docker image scanning scheduled task
+        * Helm and Tiller charts to AKS
     * Branch and path filters
-    * Selenium UI testing
-    * Black Duck
+
 
 * Define and implement a CD and RM strategy (10-15%)
-    * Artifacts new feed for public access
-    * upstream sources
-    * How to create and connect to feed
-    * Helm & Tiller deploy charts to AKS
-    * Pre- and post- conditions/gates
-    * Interpret a GUI release pipeline with triggers
-    * Deployment groups
-    * Deployments (blue/green, canary, rolling)
-    * App Service / Function deployment slots for rolling upgrades
-    * DACPAC for Azure SQL DB deployment tasks
-    * Artifacts NPM .nmprc files
-    * iOS app center cert .p12
-    * Run ACI images in AKS (YAML, kubectl, helm)
-    * Register devices in Apple Developer portal
-    * Set release stage retention policies
-    * Package feed permissions (Reader, Collaborator, Contributor, Owner)
-    * Azure Artifacts Credential Provider
+    * Azure Artifacts
+        * Artifacts new feed for public access
+        * upstream sources
+        * How to create and connect to feed
+        * NPM .nmprc files
+        * Package feed permissions (Reader, Contributor, etc)
+        * Azure Artifacts Credential Provider
+    * Containers
+        * Helm & Tiller deploy charts to AKS
+        * Run ACI images in AKS (YAML, kubectl, helm)
+    * Release pipelines
+        * Pre- and post- conditions/gates
+        * Interpret a GUI release pipeline with triggers
+        * DACPAC for Azure SQL DB deployment tasks
+        * Release stage retention policies
+        * Deployment groups
+        * Deployment types
+            * blue/green
+            * canary
+            * rolling
+        * App Service / Function deployment slots for rolling upgrades
+    * App Center
+        * iOS app center cert .p12
+        * Register devices in Apple Developer portal
 
 * Facilitate communication and collaboration (10-15%)
-    * Teams and Slack service hooks
-    * Dashboard (burndown, cycle, lead, velocity)
-    * Work processes (relation to Kanban)
+    * Service hooks
+        * Teams
+        * Slack
+    * Azure Boards
+        * Dashboard widgets (https://timw.info/mxo)
+            * burndown
+            * burnup
+            * cycle time
+            * lead time
+            * velocity
+        * Dependency Tracker extension
+    * Work item processes (https://timw.info/jp9)
+        * Basic
+        * Agile
+        * Scrum
+        * CMMI
     * Create dependency graph for application
     * Continuous Assurance
-    * Test & Feedback extension
+        * Secure DevOps Kit for Azure (https://timw.info/90j)
+    * Azure Test Plans
+        * Test & Feedback extension
