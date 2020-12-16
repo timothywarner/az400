@@ -3,6 +3,9 @@ AZ-400 Crash Course Outline
 # DAY 1
 
 * Develop an SRE strategy (5-10%)
+    * Identity
+        * Azure MFA and Conditional Access
+
     * Template deployment
         * linked templates
         * Key Vault integration
@@ -10,16 +13,19 @@ AZ-400 Crash Course Outline
     * Configuration management
         * Azure Automation DSC (PowerShell)
         * Custom Script Extension
+
     * Containers
         * ACR
             * Trusted (signed) images
         * ACI
         * AKS
+
     * App hosting options
         * App Service
             * Managed identity
         * Function App
         * Logic App automation
+
     * Alerts
         * rules
         * webhooks
@@ -28,20 +34,25 @@ AZ-400 Crash Course Outline
 * Develop a security and compliance plan (10-15%)
     * Continuous Security Validation
         * https://timw.info/i0y
+
     * Key Vault
             * RBAC
             * Advanced access policies
             * Secrets permissions
+
     * Storage Account
             * Managed storage account
             * SAS vs shared key authentication
+
     * Azure DevOps RBAC
         Reader and Service Account roles
         * Basic vs Stakeholder access levels
         * VS App Center distribution groups
+
     * Policy
         * Conditional Access device policy
         * Interpret Azure Policy conditions and actions
+
     * Continuous assurance
         * Secure DevOps Kit for Azure (https://timw.info/9s5)
 
@@ -59,6 +70,10 @@ AZ-400 Crash Course Outline
         * impact
         * users
     * Log Analytics
+
+
+###################################################################
+
 
 # DAY 2
 
