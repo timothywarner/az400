@@ -77,6 +77,34 @@ AZ-400 Crash Course Outline
 
 # DAY 2
 
+* yesterday's shavings
+    * multi-stage Dockerfile
+    * DSC PowerShell
+    * AKS Azure CLI
+    * Continuous Secuity Validation
+
+* CI pipelines
+    * Agent Pools!
+    * Integrations
+    * Actions
+
+* CD pipelines
+    * Key Vault
+        * ARM template KV reference
+
+* Artifacts
+
+* Service Hooks > Teams
+
+* Test & Feedback
+
+* Monitoring
+    - App Insights
+    - Log Analytics / KQL
+
+* AZ-400 Prep
+
+
 * Define and implement CI (20-25%)
     * Build agents
         * Self-hosted agent & external Git connection
