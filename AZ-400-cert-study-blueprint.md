@@ -4,35 +4,33 @@
 
 * [_The DevOps Handbook_](https://www.amazon.com/DevOps-Handbook-World-Class-Reliability-Organizations/dp/1942788002)
 * [_The Phoenix Project_](https://www.amazon.com/Phoenix-Project-DevOps-Helping-Business/dp/1942788290/)
+* [The Unicorn Project](https://www.amazon.com/Unicorn-Project-Developers-Disruption-Thriving-ebook/dp/B07QT9QR41)
 * [_Continuous Delivery_](https://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley-ebook/dp/B003YMNVC0/)
 * [_Accelerate_](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339/)
 * [ _Site Reliability Engineering_](https://www.amazon.com/Site-Reliability-Engineering-Production-Systems-ebook/dp/B01DCPXKZ6/ref=sr_1_3?crid=1O1DZ4OVG25OW&dchild=1&keywords=site+reliability+engineering&qid=1586531400&s=books&sprefix=site+reliab%2Cstripbooks%2C235&sr=1-3)
 
-
 ## Azure DevOps: Theoretical Knowledge
 
 * [Azure DevOps Documentation](https://docs.microsoft.com/en-us/azure/devops/)
-* [Azure Mentor AZ-400 Study Guide](https://github.com/AzureMentor/Azure-AZ-400-Study-Guide)
-* [Azure Greg's AZ-400 Study Notes](https://gregorsuttie.com/2018/10/27/azure-devops-az-400-exam-study-notes/)
-* [Stanislas.io AZ-400 Study Guide](https://stanislas.io/2019/07/26/preparation-guide-for-microsoft-az-400-microsoft-azure-devops-solutions-certification/)
-* [vWorld.nl AZ-400 Study Guide](https://vworld.nl/?page_id=5022)
-
+* [GitHub documentation](https://docs.github.com/en)
+* [GitHub Actions documentation](https://docs.github.com/en/actions)
+* [Secure DevOps Kit for Azure](https://azsk.azurewebsites.net/)
+* [Azure Template Test Toolkit](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/test-toolkit)
 
 ## Azure DevOps: Hands-on Skill Building
 
 * [Azure DevOps Labs](https://azuredevopslabs.com/)
 * [Azure DevOps Demo Generator](https://azuredevopsdemogenerator.azurewebsites.net/)
-* [Microsoft Learn](https://docs.microsoft.com/en-us/learn/browse/?roles=devops-engineer)
-* [Linux Academy](https://linuxacademy.com/course/preparing-for-the-az-400-azure-dev-ops-exam/)
-* [Cloud Academy](https://cloudacademy.com/)
 * [Parts Unlimited Hands-on Labs](https://microsoft.github.io/PartsUnlimited/)
-
+* [Microsoft Learn](https://docs.microsoft.com/en-us/learn/browse/?roles=devops-engineer)
+* [A Cloud Guru](https://acloudguru.com/course/preparing-for-the-az-400-azure-devops-exam)
+* [Cloud Academy](https://cloudacademy.com/learning-paths/az-400-exam-prep-microsoft-azure-devops-solutions-1-1368/)
+* [Pluralsight](https://www.pluralsight.com/paths/designing-and-implementing-microsoft-devops-solutions-az-400)
 
 ## Practice Exams
 
 * [Whizlabs AZ-400](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
 * [MeasureUp AZ-400](https://www.measureup.com/az-400-microsoft-azure-devops-solutions.html)
-
 
 ## Microsoft Certification Info
 
@@ -41,7 +39,6 @@
 * [Online Proctored Testing](https://www.microsoft.com/en-us/learning/online-exams.aspx)
 * [Microsoft Certification Exam Offers](https://www.microsoft.com/en-us/learning/offers.aspx)
 * [Tim's online testing helper video](https://www.youtube.com/watch?v=myf6r5nulj0&feature=youtu.be)
-
 
 ## Classroom Content Repos
 
