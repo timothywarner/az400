@@ -1,5 +1,5 @@
 AZ-400 Study Topics
-left off: Microsoft Teams a daily summary of the exceptions
+
 
 
 * Instrumentation strategy (5-10%)
