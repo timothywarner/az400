@@ -2,6 +2,13 @@ AZ-400 Crash Course Outline
 
 # DAY 1
 
+* Manage source control (10-15%)
+    * TFS vs Git vs Subversion
+    * TFS Server to AzDo migration
+    * Import repo from GitHub
+    * Branch policies
+    * Squash merge
+
 * Develop an SRE strategy (5-10%)
     * Identity
         * Azure MFA and Conditional Access
@@ -56,12 +63,7 @@ AZ-400 Crash Course Outline
     * Continuous assurance
         * Secure DevOps Kit for Azure (https://timw.info/9s5)
 
-* Manage source control (10-15%)
-    * TFS vs Git vs Subversion
-    * TFS Server to AzDo migration
-    * Import repo from GitHub
-    * Branch policies
-    * Squash merge
+
 
 * Develop an instrumentation strategy (5-10%)
     * App Insights
