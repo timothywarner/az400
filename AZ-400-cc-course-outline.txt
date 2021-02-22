@@ -2,9 +2,13 @@ AZ-400 Crash Course Outline
 
 # DAY 1
 
+
+
+
+
+
+
 * Manage source control (10-15%)
-    * TFS vs Git vs Subversion
-    * TFS Server to AzDo migration
     * Import repo from GitHub
     * Branch policies
     * Squash merge
