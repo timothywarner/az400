@@ -14,7 +14,7 @@ az group create --name akshandsonlab --location eastus
 az acr create --resource-group akshandsonlab --name aksholaz400 --sku Standard --location eastus
 
 # Create AKS cluster
- az aks create --resource-group akshandsonlab --name akslab7201 --enable-addons monitoring --kubernetes-version $version --generate-ssh-keys --location eastus
+ az aks create --resource-group akshandsonlab --name akslab7201 --enable-addons monitoring --kubernetes-version 1.20.5 --generate-ssh-keys --location eastus
 
 # Grant AKS-generated service principal access to ACR
 
@@ -25,7 +25,7 @@ CLIENT_ID=$(az aks show --resource-group akshandsonlab --name akslab7201 --query
 ACR_ID=$(az acr show --name aksholaz400 --resource-group akshandsonlab --query "id" --output tsv)
 
 # Create role assignment
-az role assignment create --assignee $CLIENT_ID --role acrpull --scope $ACR_ID
+az role assignment create --assignee 6d7ab706-0911-431a-973e-9c8f82a72404 --role acrpull --scope /subscriptions/2fbf906e-1101-4bc0-b64f-adc44e462fff/resourceGroups/akshandsonlab/providers/Microsoft.ContainerRegistry/registries/aksholaz400
 
 # Create Azure SQL Server
 az sql server create -l eastus -g akshandsonlab -n sqlaz400svr001 -u tim -p P2ssw0rd1234!
