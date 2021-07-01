@@ -26,11 +26,16 @@
 * [A Cloud Guru](https://acloudguru.com/course/preparing-for-the-az-400-azure-devops-exam)
 * [Cloud Academy](https://cloudacademy.com/learning-paths/az-400-exam-prep-microsoft-azure-devops-solutions-1-1368/)
 * [Pluralsight](https://www.pluralsight.com/paths/designing-and-implementing-microsoft-devops-solutions-az-400)
+* [Tim's Deploying ARM Templates Study Guide](https://timwinfo-my.sharepoint.com/:x:/g/personal/tim_timw_info/EQRooL1BhnRMjaIx6WEovRYBDXbzHOI1CrtpNls3zesDHw?rtime=Dw6bWK-x2Eg)
+* [Sam Cogan ARM tutorial](https://www.youtube.com/watch?v=9EpBiud48Ao&t=1s)
+* [Adam Marczak ARM tutorials](https://www.youtube.com/watch?v=Ge_Sp-1lWZ4&t=916s)
+* [How Azure Pass works](https://www.youtube.com/watch?v=Et1hyghPjeA)
 
 ## Practice Exams
 
 * [Whizlabs AZ-400](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
 * [MeasureUp AZ-400](https://www.measureup.com/az-400-microsoft-azure-devops-solutions.html)
+* [Tim's practice exam comparison](https://www.youtube.com/watch?v=_aH4DbpcJWA)
 
 ## Microsoft Certification Info
 
@@ -39,6 +44,9 @@
 * [Online Proctored Testing](https://www.microsoft.com/en-us/learning/online-exams.aspx)
 * [Microsoft Certification Exam Offers](https://www.microsoft.com/en-us/learning/offers.aspx)
 * [Tim's online testing helper video](https://www.youtube.com/watch?v=myf6r5nulj0&feature=youtu.be)
+* [ Tim's exam registration helper video](https://www.youtube.com/watch?v=FOFWbSYbbVI)
+* [Microsoft Learn blog](https://techcommunity.microsoft.com/t5/microsoft-learn-blog/bg-p/MicrosoftLearnBlog)
+* [Certification Dashboard](https://aka.ms/certdashboard)
 
 ## Classroom Content Repos
 
