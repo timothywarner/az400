@@ -1,12 +1,57 @@
-AZ-400 Crash Course Outline
+# AZ-400 Crash Course Outline
 
-# DAY 1
+## DAY 2
+
+### Shavings
+
+* Author AzDo extensions
+* Azure Arc
+* Secure files
+
+### Pipelines & Containers
+
+* Whitesource project
+* Multi-stage images
+* Signed ACR images
+* Sample project
+
+### Infrastructure
+
+* ARM templates
+* Key Vault integration
+* Continuous Security Validation
+
+### Artifacts
+
+* Visual Studio integration
+
+### Test Plans
+
+* Exploratory testing
+
+### Monitoring
+
+* Diagnostics settings
+* Log Analytics
+* Application Insights
+* KQL
+
+### The Exam
+
+* Item types
+* Practice exams (Whizlabs practice items)
+* Online testing process
+* Azure trial
 
 
 
 
 
 
+
+
+
+## DAY 1
 
 * Manage source control (10-15%)
     * Import repo from GitHub

@@ -16,6 +16,7 @@
 * [GitHub Actions documentation](https://docs.github.com/en/actions)
 * [Secure DevOps Kit for Azure](https://azsk.azurewebsites.net/)
 * [Azure Template Test Toolkit](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/test-toolkit)
+* [AzDo Continuous Security Validation](https://twitter.com/azuresupport/status/1250378442119565314?lang=he)
 
 ## Azure DevOps: Hands-on Skill Building
 
@@ -47,6 +48,7 @@
 * [ Tim's exam registration helper video](https://www.youtube.com/watch?v=FOFWbSYbbVI)
 * [Microsoft Learn blog](https://techcommunity.microsoft.com/t5/microsoft-learn-blog/bg-p/MicrosoftLearnBlog)
 * [Certification Dashboard](https://aka.ms/certdashboard)
+* [Pearson VUE customer service](https://home.pearsonvue.com/microsoft/contact)
 
 ## Classroom Content Repos
 
@@ -54,3 +56,10 @@
 * [Mike Pfeiffer's ASP.NET Core Web App](https://github.com/mikepfeiffer/AspNetCoreWebApplication)
 * [Mike Pfeiffer's Second ASP.NET Core Web App](https://github.com/CloudSkills/aspnet-core-demo)
 * [Azure DevOps Project Scaffolding Script](https://github.com/Azure/azure-devops-cli-extension/tree/master/examples/Scaffolding)
+
+## Answered Questions
+
+* [Authoring your own AzDo extensions](https://docs.microsoft.com/en-us/azure/devops/extend/develop/add-build-task?view=azure-devops)
+* [Protecting pipelines for code-signing tasks](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops)
+* [Protecting pipeline resources](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/about-resources?view=azure-devops&tabs=yaml#use-resources-to-enhance-security)
+* [GitOps with Azure Arc for Kubernetes](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-gitops-ci-cd)
