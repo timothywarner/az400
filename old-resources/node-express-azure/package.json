@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "*",
-    "express-handlebars": "3.0.0"
+    "express-handlebars": "5.3.1"
   },
   "devDependencies": {
     "mocha": "5.2.0",
