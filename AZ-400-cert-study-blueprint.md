@@ -57,7 +57,7 @@
 * [Mike Pfeiffer's Second ASP.NET Core Web App](https://github.com/CloudSkills/aspnet-core-demo)
 * [Azure DevOps Project Scaffolding Script](https://github.com/Azure/azure-devops-cli-extension/tree/master/examples/Scaffolding)
 
-## Answered Questions
+## FAQ
 
 * [Authoring your own AzDo extensions](https://docs.microsoft.com/en-us/azure/devops/extend/develop/add-build-task?view=azure-devops)
 * [Protecting pipelines for code-signing tasks](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops)
