@@ -39,7 +39,7 @@
 
 ## Practice exams
 
-- [Whizlabs AZ-400](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
+- [Microsoft Practice Assessments](https://learn.microsoft.com/en-us/credentials/certifications/practice-assessments-for-microsoft-certifications)
 - [MeasureUp AZ-400](https://www.measureup.com/az-400-microsoft-azure-devops-solutions.html)
 - [Tim's practice exam comparison](https://www.youtube.com/watch?v=_aH4DbpcJWA)
 
