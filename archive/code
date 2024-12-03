@@ -1,0 +1,20 @@
+Sudo for Windows
+
+Usage: sudo.exe [OPTIONS] [COMMANDLINE]... [COMMAND]
+
+Commands:
+  run     Run a command as admin
+  config  Get current configuration information of sudo
+  help    Print this message or the help of the given subcommand(s)
+
+Arguments:
+  [COMMANDLINE]...  Command-line to run
+
+Options:
+  -E, --preserve-env   Pass the current environment variables to the command
+  -N, --new-window     Use a new window for the command
+      --disable-input  Run in the current terminal, with input to the target application disabled
+      --inline         Run in the current terminal
+  -D, --chdir <chdir>  Change the working directory before running the command
+  -h, --help           Print help (see more with '--help')
+  -V, --version        Print version
