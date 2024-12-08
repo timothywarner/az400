@@ -1,0 +1,155 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "site_host_name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+        },
+        "app_svc_plan_name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+        },
+        "environmentType": {
+            "type": "string",
+            "allowedValues": [
+                "dev",
+                "test",
+                "prod"
+            ],
+            "defaultValue": "dev"
+        }
+    },
+    "variables": {
+        "skuMap": {
+            "dev": {
+                "name": "B1",
+                "tier": "Basic",
+                "size": "B1",
+                "family": "B",
+                "capacity": 1
+            },
+            "test": {
+                "name": "P1v2",
+                "tier": "PremiumV2",
+                "size": "P1v2",
+                "family": "Pv2",
+                "capacity": 1
+            },
+            "prod": {
+                "name": "P2v3",
+                "tier": "PremiumV3",
+                "size": "P2v3",
+                "family": "Pv3",
+                "capacity": 1
+            }
+        },
+        "selectedSku": "[variables('skuMap')[parameters('environmentType')]]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('app_svc_plan_name')]",
+            "location": "[resourceGroup().location]",
+            "sku": "[variables('selectedSku')]",
+            "kind": "linux",
+            "properties": {
+                "reserved": true,
+                "zoneRedundant": "[if(equals(parameters('environmentType'), 'prod'), true(), false())]"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('site_host_name')]",
+            "location": "[resourceGroup().location]",
+            "kind": "app,linux",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app_svc_plan_name'))]",
+                "httpsOnly": true,
+                "clientAffinityEnabled": false,
+                "siteConfig": {
+                    "linuxFxVersion": "NODE|18-lts",
+                    "minTlsVersion": "1.2",
+                    "ftpsState": "FtpsOnly",
+                    "http20Enabled": true,
+                    "alwaysOn": true,
+                    "appSettings": [
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_ENV",
+                            "value": "[parameters('environmentType')]"
+                        }
+                    ],
+                    "healthCheckPath": "/health",
+                    "scmIpSecurityRestrictions": [
+                        {
+                            "ipAddress": "Any",
+                            "action": "Deny",
+                            "priority": 2147483647,
+                            "name": "Deny all",
+                            "description": "Deny all access"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('app_svc_plan_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/slots",
+            "apiVersion": "2022-09-01",
+            "name": "[format('{0}/staging', parameters('site_host_name'))]",
+            "location": "[resourceGroup().location]",
+            "kind": "app,linux",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app_svc_plan_name'))]",
+                "httpsOnly": true,
+                "clientAffinityEnabled": false,
+                "siteConfig": {
+                    "linuxFxVersion": "NODE|18-lts",
+                    "minTlsVersion": "1.2",
+                    "ftpsState": "FtpsOnly",
+                    "http20Enabled": true,
+                    "autoSwapSlotName": "[if(equals(parameters('environmentType'), 'prod'), 'production', '')]",
+                    "appSettings": [
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_ENV",
+                            "value": "staging"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('site_host_name'))]"
+            ]
+        }
+    ],
+    "outputs": {
+        "webAppHostName": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Web/sites', parameters('site_host_name'))).defaultHostName]"
+        },
+        "stagingHostName": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Web/sites/slots', parameters('site_host_name'), 'staging')).defaultHostName]"
+        }
+    }
+}

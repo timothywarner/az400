@@ -1,0 +1,94 @@
+# AZ-400 Azure DevOps CLI Reference Guide
+# ======================================
+
+# 1. SETUP AND INSTALLATION
+# ------------------------
+# Install Azure CLI first from: https://docs.microsoft.com/cli/azure/install-azure-cli
+
+# Install Azure DevOps extension
+az extension add --name azure-devops
+
+# Update all extensions
+az extension update --all
+
+# Check installed extensions
+az extension list --output table
+
+# 2. AUTHENTICATION AND CONFIG
+# ---------------------------
+# Login to Azure
+az login
+
+# Set default organization and project
+az devops configure --defaults organization=https://dev.azure.com/certstarorg project=nodeapp
+
+# 3. REPOSITORY COMMANDS
+# ---------------------
+# List all repositories
+az repos list --output table
+
+# Show specific repo
+az repos show --repository nodeapp
+
+# List branch policies
+az repos policy list --repository nodeapp
+
+# 4. PIPELINE COMMANDS
+# -------------------
+# List all pipelines
+az pipelines list
+
+# Run a specific pipeline
+az pipelines run --name node-simple-ci --branch main
+
+# Get build status
+az pipelines build list --top 1
+
+# 5. ARTIFACT FEEDS
+# ----------------
+# List all feeds
+az artifacts feed list
+
+# List packages in a feed
+az artifacts package list --feed az400-npm-dev
+
+# 6. WORK ITEMS
+# ------------
+# List your work items
+az boards work-item list --assigned-to @me
+
+# Create a task
+az boards work-item create --title "New Task" --type "Task"
+
+# 7. VARIABLE GROUPS
+# ----------------
+# List variable groups
+az pipelines variable-group list
+
+# 8. SERVICE CONNECTIONS
+# --------------------
+# List service connections
+az devops service-endpoint list
+
+# 9. ENVIRONMENTS
+# -------------
+# List environments
+az pipelines environment list
+
+# COMMON SCENARIOS
+# ===============
+# Create a PR
+az repos pr create --source-branch feature --target-branch main --title "New Feature"
+
+# Get pipeline logs
+az pipelines runs show-logs --run-id {runId}
+
+# Create wiki
+az devops wiki create --name "Documentation" --type projectwiki
+
+# TIPS
+# ====
+# 1. Add --output table for readable output
+# 2. Use --help with any command for details
+# 3. Use --query for filtering results
+# 4. Save credentials: az devops login

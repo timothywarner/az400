@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.profiles.windows": {
+			"PowerShell (Admin)": {
+				"path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+				"args": [
+					"-NoExit",
+					"-Command",
+					"Start-Process pwsh -Verb RunAs"
+				]
+			}
+		},
+		"terminal.integrated.defaultProfile.windows": "PowerShell (Admin)"
+	}
+}

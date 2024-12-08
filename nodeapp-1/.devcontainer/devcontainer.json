@@ -1,0 +1,76 @@
+{
+  "name": "AZ-400 Node.js Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18",
+      "nodeGypDependencies": false
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-azuretools.vscode-azureappservice",
+        "ms-azuretools.vscode-docker",
+        "ms-azure-devops.azure-pipelines",
+        "ms-vscode.azure-account",
+        "GitHub.vscode-pull-request-github"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.exclude": {
+          "**/node_modules": true,
+          "**/.git": true,
+          "**/.DS_Store": true
+        },
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/dist/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/bower_components": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "npm ci && az extension add --name azure-devops --yes",
+  "postStartCommand": "echo 'Container started at: ' $(date) >> /workspaces/.codespaces/.persistedshare/creation-time.log",
+  "postAttachCommand": {
+    "server": "npm start"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Node App",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "remoteUser": "node",
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "NPM_CONFIG_LOGLEVEL": "error",
+    "CHOKIDAR_USEPOLLING": "false",
+    "COMPOSE_HTTP_TIMEOUT": "120"
+  },
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.azure,target=/home/node/.azure,type=bind",
+    "source=node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ]
+}

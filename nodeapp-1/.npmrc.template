@@ -1,0 +1,15 @@
+# Azure Artifacts feed
+registry=https://pkgs.dev.azure.com/certstarorg/_packaging/az400-npm-prod/npm/registry/
+always-auth=true
+
+# Auth for Azure Artifacts - DO NOT COMMIT ACTUAL CREDENTIALS
+//pkgs.dev.azure.com/certstarorg/_packaging/az400-npm-prod/npm/registry/:username=${AZURE_NPM_USERNAME}
+//pkgs.dev.azure.com/certstarorg/_packaging/az400-npm-prod/npm/registry/:_password=${AZURE_NPM_PASSWORD}
+//pkgs.dev.azure.com/certstarorg/_packaging/az400-npm-prod/npm/registry/:email=${AZURE_NPM_EMAIL}
+
+# Public npm registry for external packages
+@certstarorg:registry=https://pkgs.dev.azure.com/certstarorg/_packaging/az400-npm-feed/npm/registry/
+
+save-exact=true
+audit=true
+fund=false 

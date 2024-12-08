@@ -1,0 +1,79 @@
+To introduce common Node.js debugging scenarios into your application for teaching purposes, here are several examples that simulate typical issues developers might encounter. These scenarios are designed to be instructional without breaking the application entirely:
+
+### 1. Dependency Version Conflict
+
+**Scenario**: Intentionally downgrade a package version in [`package.json`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2Fgithub%2Farchive%2Fnode-express-azure%2Fpackage.json%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\github\archive\node-express-azure\package.json") to simulate a dependency version conflict. For example, change the version of `express` to an older one that might lack some features used in the app.
+
+```json
+"dependencies": {
+  "express": "4.16.0" // Downgrade from a newer version
+}
+```
+
+**Teaching Point**: Demonstrate how to identify and resolve dependency version conflicts using `npm list`, `npm outdated`, and reading the package's changelog to understand breaking changes.
+
+### 2. Async/Await Misuse
+
+**Scenario**: Introduce a bug by removing `await` from an asynchronous function call, causing unexpected behavior due to the promise not being resolved.
+
+```javascript
+// Original
+const result = await someAsyncFunction();
+
+// Modified (introduce bug)
+const result = someAsyncFunction();
+```
+
+**Teaching Point**: Highlight the importance of correctly using `async/await` for handling asynchronous operations and how to debug issues related to promises and asynchronous code.
+
+### 3. Environment Configuration Error
+
+**Scenario**: Misconfigure an environment variable in a way that doesn't crash the app but causes it to behave unexpectedly. For example, set the port number to a string that can't be converted to a number.
+
+```javascript
+// In config.js or .env
+PORT="notAPort"
+```
+
+**Teaching Point**: Teach how to debug configuration issues, including checking environment variables and ensuring they are correctly parsed and validated.
+
+### 4. Incorrect Middleware Order
+
+**Scenario**: Rearrange middleware in `app.js` so that a middleware that should run after another runs before it, such as placing error handling middleware too early in the stack.
+
+```javascript
+// Before
+app.use('/api', apiRoutes);
+app.use(errorHandler);
+
+// After (introduce bug)
+app.use(errorHandler);
+app.use('/api', apiRoutes);
+```
+
+**Teaching Point**: Explain the importance of middleware order in Express applications and how to trace and resolve issues arising from incorrect middleware sequencing.
+
+### 5. Callback Error Handling
+
+**Scenario**: Introduce a subtle bug in a callback function by not properly handling an error scenario, which might cause unhandled exceptions or the application to hang.
+
+```javascript
+// Original
+fs.readFile('somefile.txt', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+// Modified (introduce bug)
+fs.readFile('somefile.txt', (err, data) => {
+  console.log(data);
+});
+```
+
+**Teaching Point**: Discuss the importance of error handling in callbacks and how to properly handle errors to prevent crashes and ensure application robustness.
+
+These scenarios cover a range of common issues from simple syntax and logical errors to more complex asynchronous programming and configuration challenges, providing a comprehensive debugging learning experience.
+
+
+
+

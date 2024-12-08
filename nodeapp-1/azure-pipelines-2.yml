@@ -1,0 +1,63 @@
+trigger:
+- master
+
+variables:
+  azureSubscription: '<Azure-Subscription-Name>'
+  webAppName: '<App-Service-Name>'
+  environmentName: 'production'
+  nodeVersion: '14.x'
+  workingDirectory: '.' # update this to the path to your web app project, if applicable
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: $(nodeVersion)
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        npm run build --if-present
+      displayName: 'npm install and build'
+      workingDirectory: $(workingDirectory)
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: $(environmentName)
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: $(azureSubscription)
+              appType: 'webApp'
+              WebAppName: $(webAppName)
+              packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'

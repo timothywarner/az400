@@ -1,0 +1,4 @@
+{
+  "appService.deploySubpath": ".",
+  "appService.defaultWebAppToDeploy": "/subscriptions/2fbf906e-1101-4bc0-b64f-adc44e462fff/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/twnodetestapp"
+}
