@@ -15,6 +15,7 @@
 				]
 			}
 		},
-		"terminal.integrated.defaultProfile.windows": "PowerShell (Admin)"
+		"terminal.integrated.defaultProfile.windows": "PowerShell (Admin)",
+		"dotnet.defaultSolution": "disable"
 	}
 }

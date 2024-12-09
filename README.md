@@ -1,6 +1,11 @@
 # AZ-400 Exam Preparation Resources
 > Study materials and resources for Microsoft's AZ-400: Designing and Implementing Microsoft DevOps Solutions certification exam.
 
+## Latest updates
+
+- [Microsoft Learn AZ-400 lab exercises](https://microsoftlearning.github.io/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/)
+- [Parts Unlimited MRP demo application](https://github.com/microsoft/PartsUnlimitedMRP)
+
 ## 📫 Contact Information
 
 - **Name:** Tim Warner
