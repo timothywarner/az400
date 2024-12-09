@@ -9,6 +9,7 @@
 ## 📫 Contact Information
 
 - **Name:** Tim Warner
+- **GitHub:** [@timothywarner](https://github.com/timothywarner)
 - **Email:** [timothywarner316@gmail.com](mailto:timothywarner316@gmail.com)
 - **LinkedIn:** [Timothy Warner](https://www.linkedin.com/in/timothywarner/)
 - **YouTube:** [Tech Trainer Tim](https://www.youtube.com/channel/UCim7PFtynyPuzMHtbNyYOXA)
