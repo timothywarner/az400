@@ -1,0 +1,104 @@
+# Single-Stage CI Pipeline for Node.js
+# Teaching example for basic continuous integration
+
+trigger:
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    include:
+    - nodeapp-1/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '18.x'
+  artifactName: 'drop'
+
+steps:
+# Step 1: Setup Node.js environment
+- task: NodeTool@0
+  displayName: 'Install Node.js $(nodeVersion)'
+  inputs:
+    versionSpec: $(nodeVersion)
+
+# Step 2: Install dependencies
+- script: |
+    echo "Installing npm dependencies..."
+    npm ci
+  displayName: 'npm install'
+  workingDirectory: nodeapp-1
+
+# Step 3: Run linting
+- script: |
+    echo "Running ESLint..."
+    npm run lint || echo "No lint script found, skipping..."
+  displayName: 'Run linting'
+  workingDirectory: nodeapp-1
+  continueOnError: true
+
+# Step 4: Run unit tests
+- script: |
+    echo "Running tests..."
+    npm test
+  displayName: 'Run unit tests'
+  workingDirectory: nodeapp-1
+
+# Step 5: Generate test results
+- task: PublishTestResults@2
+  displayName: 'Publish test results'
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/test-results.xml'
+    searchFolder: nodeapp-1
+  condition: succeededOrFailed()
+
+# Step 6: Code coverage
+- script: |
+    echo "Generating code coverage..."
+    npm run coverage || echo "No coverage script found, skipping..."
+  displayName: 'Generate code coverage'
+  workingDirectory: nodeapp-1
+  continueOnError: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: 'nodeapp-1/coverage/cobertura-coverage.xml'
+  condition: succeededOrFailed()
+
+# Step 7: Build the application
+- script: |
+    echo "Building application..."
+    npm run build || npm run compile || echo "No build script, using source files..."
+  displayName: 'Build application'
+  workingDirectory: nodeapp-1
+
+# Step 8: Create artifact
+- task: ArchiveFiles@2
+  displayName: 'Archive application files'
+  inputs:
+    rootFolderOrFile: 'nodeapp-1'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+# Step 9: Publish artifact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: $(artifactName)
+    publishLocation: 'Container'
+
+# Success notification
+- script: |
+    echo "✅ Build completed successfully!"
+    echo "Build ID: $(Build.BuildId)"
+    echo "Source branch: $(Build.SourceBranch)"
+    echo "Commit: $(Build.SourceVersion)"
+  displayName: 'Build summary'
+  condition: succeeded()
