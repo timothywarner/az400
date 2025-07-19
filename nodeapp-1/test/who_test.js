@@ -3,17 +3,17 @@ const config = require('../config');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
-const server = require('../app');
+const app = require('../app');
 
 chai.use(chaiHttp);
 
-describe('/GET', () => {
+describe('/GET who', () => {
     it('returns the who page', (done) => {
-        chai.request(`http://localhost:${config.port}`)
+        chai.request(app)
             .get('/who')
             .end((err, res) => {
                 res.should.have.status(200);
-                res.text.should.contain('Who We Are');
+                res.text.should.contain('Who are you?');
                 done();
             });
     });

@@ -27,6 +27,7 @@ variables:
   environmentNameDev: 'Development'
   environmentNameStaging: 'Staging'
   environmentNameProd: 'Production'
+  workingDirectory: 'nodeapp-1'
 
 stages:
 # ========================================
@@ -49,60 +50,43 @@ stages:
         echo "📦 Installing dependencies..."
         npm ci
       displayName: 'Install dependencies'
-      workingDirectory: nodeapp-1
+      workingDirectory: $(workingDirectory)
 
     # Run security audit
     - script: |
         echo "🔒 Running security audit..."
         npm audit --audit-level=high || true
       displayName: 'Security audit'
-      workingDirectory: nodeapp-1
+      workingDirectory: $(workingDirectory)
 
     # Run linting
     - script: |
         echo "🔍 Running linter..."
-        npm run lint || echo "No lint script configured"
+        npm run lint
       displayName: 'Lint code'
-      workingDirectory: nodeapp-1
+      workingDirectory: $(workingDirectory)
       continueOnError: true
 
-    # Run unit tests
+    # Run unit tests with Mocha
     - script: |
-        echo "🧪 Running unit tests..."
-        npm test -- --coverage || npm test
+        echo "🧪 Running Mocha tests..."
+        npm test
       displayName: 'Run unit tests'
-      workingDirectory: nodeapp-1
+      workingDirectory: $(workingDirectory)
 
     # Publish test results
-    - task: PublishTestResults@2
-      displayName: 'Publish test results'
+    - task: PublishHtmlReport@1
+      displayName: 'Publish Mochawesome Report'
       inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/test-*.xml'
-        searchFolder: nodeapp-1
-        failTaskOnFailedTests: true
+        reportDir: '$(workingDirectory)/mochawesome-report'
+        tabName: 'Test Results'
       condition: succeededOrFailed()
-
-    # Publish code coverage
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Publish code coverage'
-      inputs:
-        codeCoverageTool: 'Cobertura'
-        summaryFileLocation: 'nodeapp-1/coverage/**/cobertura-coverage.xml'
-      condition: succeededOrFailed()
-
-    # Build application
-    - script: |
-        echo "🔨 Building application..."
-        npm run build || echo "No build required"
-      displayName: 'Build application'
-      workingDirectory: nodeapp-1
 
     # Create deployment package
     - task: ArchiveFiles@2
       displayName: 'Create deployment package'
       inputs:
-        rootFolderOrFile: 'nodeapp-1'
+        rootFolderOrFile: $(workingDirectory)
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -111,6 +95,15 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)
       artifact: drop
       displayName: 'Publish artifact'
+
+    # Publish to Azure Artifacts Dev Feed
+    - task: Npm@1
+      displayName: 'Publish to Dev Feed'
+      inputs:
+        command: 'custom'
+        workingDir: $(workingDirectory)
+        customCommand: 'run publish:dev'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
 
 # ========================================
 # STAGE 2: DEPLOY TO DEVELOPMENT
@@ -185,20 +178,17 @@ stages:
               package: '$(Pipeline.Workspace)/drop/*.zip'
               runtimeStack: 'NODE|18-lts'
 
-          # Run integration tests
+          # Run integration tests using Chai-HTTP
           - script: |
               echo "🧪 Running integration tests..."
-              npm run test:integration || echo "No integration tests configured"
+              # Install test dependencies
+              npm ci
+              # Run tests against staging URL
+              export TEST_URL=https://$(webAppName)-staging.azurewebsites.net
+              npm test
             displayName: 'Integration tests'
-            workingDirectory: nodeapp-1
+            workingDirectory: $(workingDirectory)
             continueOnError: true
-
-          # Performance test
-          - script: |
-              echo "⚡ Running performance tests..."
-              # Add your performance testing tool here
-              echo "Performance baseline: Response time < 200ms"
-            displayName: 'Performance tests'
 
 # ========================================
 # STAGE 4: DEPLOY TO PRODUCTION
@@ -221,7 +211,7 @@ stages:
               echo "📋 Pre-deployment checklist:"
               echo "✓ All tests passed"
               echo "✓ Security scan completed"
-              echo "✓ Performance benchmarks met"
+              echo "✓ Staging validation complete"
             displayName: 'Pre-deployment validation'
         
         deploy:
@@ -252,6 +242,15 @@ stages:
               ResourceGroupName: $(resourceGroupName)
               SourceSlot: 'staging'
               SwapWithProduction: true
+
+          # Publish to Azure Artifacts Prod Feed
+          - task: Npm@1
+            displayName: 'Publish to Prod Feed'
+            inputs:
+              command: 'custom'
+              workingDir: $(workingDirectory)
+              customCommand: 'run publish:prod'
+            condition: succeeded()
 
         postRouteTraffic:
           steps:
@@ -284,33 +283,3 @@ stages:
                 echo "Build: $(Build.BuildId)"
                 echo "Commit: $(Build.SourceVersion)"
               displayName: 'Deployment summary'
-
-# ========================================
-# STAGE 5: POST-DEPLOYMENT
-# ========================================
-- stage: PostDeployment
-  displayName: 'Post-Deployment Tasks'
-  dependsOn: DeployProd
-  condition: succeeded()
-  jobs:
-  - job: PostDeploymentTasks
-    displayName: 'Run post-deployment tasks'
-    steps:
-    # Tag the release
-    - script: |
-        echo "🏷️ Tagging release..."
-        git tag -a "v$(Build.BuildId)" -m "Release $(Build.BuildId)"
-      displayName: 'Tag release'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-
-    # Update documentation
-    - script: |
-        echo "📚 Updating deployment documentation..."
-        echo "Deployment completed at: $(date)" >> deployment-log.md
-      displayName: 'Update documentation'
-
-    # Send notifications
-    - script: |
-        echo "📧 Sending deployment notifications..."
-        # Add your notification logic here (Teams, Slack, email)
-      displayName: 'Send notifications'

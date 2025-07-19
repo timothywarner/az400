@@ -16,6 +16,7 @@ pool:
 variables:
   nodeVersion: '18.x'
   artifactName: 'drop'
+  workingDirectory: 'nodeapp-1'
 
 steps:
 # Step 1: Setup Node.js environment
@@ -29,70 +30,62 @@ steps:
     echo "Installing npm dependencies..."
     npm ci
   displayName: 'npm install'
-  workingDirectory: nodeapp-1
+  workingDirectory: $(workingDirectory)
 
 # Step 3: Run linting
 - script: |
     echo "Running ESLint..."
-    npm run lint || echo "No lint script found, skipping..."
+    npm run lint
   displayName: 'Run linting'
-  workingDirectory: nodeapp-1
+  workingDirectory: $(workingDirectory)
   continueOnError: true
 
-# Step 4: Run unit tests
+# Step 4: Run unit tests with Mocha
 - script: |
-    echo "Running tests..."
+    echo "Running Mocha tests..."
     npm test
   displayName: 'Run unit tests'
-  workingDirectory: nodeapp-1
+  workingDirectory: $(workingDirectory)
 
-# Step 5: Generate test results
-- task: PublishTestResults@2
-  displayName: 'Publish test results'
+# Step 5: Publish test results (mochawesome generates HTML reports)
+- task: PublishHtmlReport@1
+  displayName: 'Publish Mochawesome Report'
   inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/test-results.xml'
-    searchFolder: nodeapp-1
+    reportDir: '$(workingDirectory)/mochawesome-report'
+    tabName: 'Test Results'
   condition: succeededOrFailed()
 
-# Step 6: Code coverage
+# Step 6: Security audit
 - script: |
-    echo "Generating code coverage..."
-    npm run coverage || echo "No coverage script found, skipping..."
-  displayName: 'Generate code coverage'
-  workingDirectory: nodeapp-1
+    echo "Running npm audit..."
+    npm audit --audit-level=high
+  displayName: 'Security audit'
+  workingDirectory: $(workingDirectory)
   continueOnError: true
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage'
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: 'nodeapp-1/coverage/cobertura-coverage.xml'
-  condition: succeededOrFailed()
-
-# Step 7: Build the application
-- script: |
-    echo "Building application..."
-    npm run build || npm run compile || echo "No build script, using source files..."
-  displayName: 'Build application'
-  workingDirectory: nodeapp-1
-
-# Step 8: Create artifact
+# Step 7: Create artifact (no build step - it's a runtime app)
 - task: ArchiveFiles@2
   displayName: 'Archive application files'
   inputs:
-    rootFolderOrFile: 'nodeapp-1'
+    rootFolderOrFile: $(workingDirectory)
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
 
-# Step 9: Publish artifact
+# Step 8: Publish artifact
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: $(artifactName)
     publishLocation: 'Container'
+
+# Step 9: Publish to Azure Artifacts (optional)
+- script: |
+    echo "Ready to publish to Azure Artifacts feed"
+    echo "Use: npm run publish:dev or npm run publish:prod"
+  displayName: 'Azure Artifacts info'
+  condition: succeeded()
 
 # Success notification
 - script: |

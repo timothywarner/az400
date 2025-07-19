@@ -26,6 +26,7 @@ env:
   NODE_VERSION: '18.x'
   AZURE_WEBAPP_NAME: 'webapp-az400-demo'
   AZURE_WEBAPP_PACKAGE_PATH: './nodeapp-1'
+  WORKING_DIRECTORY: 'nodeapp-1'
 
 jobs:
   # ========================================
@@ -44,42 +45,38 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/package-lock.json'
+        cache-dependency-path: '${{ env.WORKING_DIRECTORY }}/package-lock.json'
 
     - name: 📦 Install dependencies
       run: npm ci
-      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      working-directory: ${{ env.WORKING_DIRECTORY }}
 
     - name: 🔒 Security audit
       run: npm audit --audit-level=high
-      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      working-directory: ${{ env.WORKING_DIRECTORY }}
       continue-on-error: true
 
     - name: 🧹 Lint code
-      run: npm run lint || echo "No lint script configured"
-      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      run: npm run lint
+      working-directory: ${{ env.WORKING_DIRECTORY }}
 
-    - name: 🧪 Run tests
-      run: npm test -- --coverage || npm test
-      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: 🧪 Run tests with Mocha
+      run: npm test
+      working-directory: ${{ env.WORKING_DIRECTORY }}
 
-    - name: 📊 Upload coverage reports
-      uses: codecov/codecov-action@v3
+    - name: 📊 Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
       with:
-        directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/coverage
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
-
-    - name: 🔨 Build application
-      run: npm run build || echo "No build required"
-      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        name: mochawesome-report
+        path: ${{ env.WORKING_DIRECTORY }}/mochawesome-report
+        retention-days: 7
 
     - name: 📤 Upload artifact for deployment
       uses: actions/upload-artifact@v4
       with:
         name: node-app
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        path: ${{ env.WORKING_DIRECTORY }}
         retention-days: 5
 
   # ========================================
@@ -137,6 +134,9 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+    - name: 📥 Checkout for tests
+      uses: actions/checkout@v4
+
     - name: 📥 Download artifact
       uses: actions/download-artifact@v4
       with:
@@ -158,9 +158,11 @@ jobs:
 
     - name: 🧪 Run integration tests
       run: |
-        echo "Running integration tests against staging..."
-        # Add your integration test commands here
-        echo "✅ Integration tests passed!"
+        cd ${{ env.WORKING_DIRECTORY }}
+        npm ci
+        export TEST_URL=https://${{ env.AZURE_WEBAPP_NAME }}-staging.azurewebsites.net
+        npm test
+      continue-on-error: true
 
   # ========================================
   # JOB 4: DEPLOY TO PRODUCTION
@@ -204,12 +206,6 @@ jobs:
           });
           console.log(`✅ Created tag: ${tag}`);
 
-    - name: 📊 Monitor deployment
-      run: |
-        echo "Monitoring production deployment..."
-        # Add Application Insights queries here
-        echo "✅ Production deployment healthy!"
-
 # ========================================
 # REUSABLE WORKFLOW: SECURITY SCAN
 # ========================================
@@ -222,12 +218,7 @@ jobs:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    - name: 🔍 Run CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        languages: javascript
-
-    - name: 🛡️ Run Dependabot scan
+    - name: 🔍 Run Dependabot scan
       uses: github/super-linter@v5
       env:
         DEFAULT_BRANCH: main

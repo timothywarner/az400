@@ -1,40 +1,77 @@
-# Node & Express Demo App for GitHub Actions, Azure DevOps, and Beyond
+# Node Express Azure - AZ-400 Demo App
 
-## Last edited by Tim Warner
+Sample Node.js Express application for demonstrating CI/CD pipelines in AZ-400 training.
 
-> Build Your First CI/CD Pipeline using Azure DevOps with this Demo App.
+## Features
 
-This is a Node and Express web application used to demonstrate CI/CD with Azure DevOps. You can clone this repo and use it within Azure DevOps to build, test, and release to an Azure App Service web app.
+- Express.js web application
+- Handlebars templating
+- Mocha/Chai testing with mochawesome reports
+- ESLint for code quality
+- Docker support
+- Azure DevOps and GitHub Actions ready
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/timothywarner/node-express-azure)
+## Getting Started
 
-## Running and Testing Locally:
+### Prerequisites
 
-You can use these commands to install, test, and run the app locally. (Not Required)
+- Node.js 18.x or higher
+- npm 8.x or higher
 
-### Install
+### Installation
 
-```
+```bash
 npm install
 ```
 
-### Test
+### Running Locally
 
-```
-npm test
-```
-
-![alt text](https://user-images.githubusercontent.com/5126491/51065379-c1743280-15c1-11e9-80fd-6a3d7ab4ac1b.jpg "Unit Test")
-
-Navigate to the `/test` folder to review the unit tests for this project. These tests will run as part of your Azure DevOps Build pipeline. See `azure-pipelines.yml` in this repo.
-
-### Start
-
-```
+```bash
 npm start
 ```
 
+The app will be available at http://localhost:3000
 
-### License
+### Running Tests
 
-This project is licensed under the Apache License 2.0
+```bash
+npm test
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+### Docker
+
+Build the image:
+```bash
+docker build -t nodeapp-1 .
+```
+
+Run the container:
+```bash
+docker run -p 3000:3000 nodeapp-1
+```
+
+## CI/CD Pipelines
+
+This app includes example pipelines for:
+- Azure Pipelines (see `/pipelines` folder in repo root)
+- GitHub Actions (see `.github/workflows` in repo root)
+
+## Azure Artifacts
+
+To publish to Azure Artifacts:
+
+1. Create `.npmrc` from `.npmrc.template`
+2. Set up authentication
+3. Run `npm run publish:dev` or `npm run publish:prod`
+
+## Environment Variables
+
+- `PORT` - Server port (default: 3000)
+- `NODE_ENV` - Environment (development/production)
+- `AZURE_ARTIFACTS_FEED` - Azure Artifacts feed URL

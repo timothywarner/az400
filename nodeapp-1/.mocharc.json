@@ -1,0 +1,13 @@
+{
+  "timeout": 5000,
+  "exit": true,
+  "reporter": "mochawesome",
+  "reporter-options": [
+    "reportDir=mochawesome-report",
+    "reportFilename=test-results",
+    "html=true",
+    "json=true",
+    "overwrite=true",
+    "inline=true"
+  ]
+}
