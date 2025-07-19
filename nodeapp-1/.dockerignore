@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+mochawesome-report
+.git
+.gitignore
+.npmrc
+.eslintrc.json
+.mocharc.json
+test
+debug-solution.txt
+*.code-workspace
+.vscode
+.devcontainer
+.github
+.azure

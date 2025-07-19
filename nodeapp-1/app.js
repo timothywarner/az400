@@ -27,7 +27,12 @@ app.use('/', index);
 app.use('/who', who);
 app.use('/contact', contact);
 
-// Start the server
-app.listen(app.get('port'), () => {
-  console.log(`Server running on port ${app.get('port')}`);
-});
+// Export the app for testing
+module.exports = app;
+
+// Only start the server if this file is run directly
+if (require.main === module) {
+  app.listen(app.get('port'), () => {
+    console.log(`Server running on port ${app.get('port')}`);
+  });
+}
