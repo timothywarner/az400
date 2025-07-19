@@ -1,102 +1,234 @@
-# AZ-400 Course Plan
+# AZ-400 Course Plan - O'Reilly Training
+## 5 x 50-minute segments aligned with July 2024 Objective Domain
 
 ---
 
-## Segment 1: DevOps Foundations, Source Control, and Artifacts
-- **DevOps Overview**
-  - Core principles: CI/CD, collaboration, automation, monitoring.
-  - Azure DevOps vs. GitHub: when to use each.
-- **Setting Up Projects**
-  - Create a project in Azure DevOps and link it to GitHub.
-  - Sync Azure Boards with GitHub Issues.
-- **Source Control Basics**
-  - Branching strategies: GitFlow, trunk-based, feature flags.
-  - Create branches and enforce policies in Azure Repos and GitHub.
-- **Pull Requests (PRs)**
-  - Create, review, and automate PR workflows.
-  - Link PRs to work items for traceability.
-- **Artifacts**
-  - Publish and manage artifacts in Azure Pipelines and GitHub Packages.
-  - Use artifact feeds for package storage (NuGet, npm).
-- **Interactive Demos**
-  - Use VS Code and GitHub Desktop for workflows.
-  - Publish a package to Azure Artifacts and GitHub Packages.
+## Segment 1: DevOps Foundation & Team Setup
+**Theme:** Starting the Journey - People, Process, Tools
+
+### Core Topics
+- **DevOps Culture & Principles**
+  - CI/CD mindset and continuous value delivery
+  - Breaking down silos between Dev, Ops, and Security
+  - Azure DevOps vs GitHub: choosing the right platform
+
+- **Project Setup & Organization**
+  - Creating Azure DevOps organizations and projects
+  - GitHub repository structure and GitHub Flow implementation
+  - Configuring two-way sync between Azure Boards and GitHub Issues
+  
+- **Work Tracking & Traceability**
+  - Implementing source, bug, and quality traceability
+  - Configuring GitHub Projects and Azure Boards integration
+  - Creating feedback cycles with notifications and issues
+
+- **Access Management**
+  - Azure DevOps security groups and permissions
+  - GitHub roles and outside collaborator access
+  - Stakeholder access patterns and best practices
+
+- **Documentation & Communication**
+  - Wiki configuration with Markdown and Mermaid diagrams
+  - Process documentation and team collaboration
+  - Webhook integration for automated notifications
+
+### Interactive Demo
+- Create a new project with proper team structure
+- Set up Azure Boards + GitHub integration
+- Configure basic wiki with team processes
 
 ---
 
-## Segment 2: Continuous Integration (CI)
-- **CI Basics**
-  - Automate build pipelines for code validation and integration.
-- **Azure Pipelines**
-  - Create a YAML-based CI pipeline for a Node.js/.NET app.
-  - Add build steps, triggers, and notifications.
-- **GitHub Actions**
-  - Build a CI workflow using reusable Actions.
-  - Compare YAML workflows in GitHub and Azure Pipelines.
-- **Testing in CI**
-  - Add unit and static analysis tests to pipelines (e.g., NUnit, Jest, SonarCloud).
-- **Pipeline Optimization**
-  - Enable caching to reduce build times.
-  - Analyze build outputs and logs for debugging.
-- **Interactive Demos**
-  - Run a pipeline, view test results, and resolve issues live.
+## Segment 2: Source Control & CI Fundamentals
+**Theme:** Code Management & Quality Gates
+
+### Core Topics
+- **Git Strategies & Workflows**
+  - Trunk-based development vs feature branching
+  - Implementing GitHub Flow effectively
+  - Branch naming conventions and PR templates
+
+- **Branch Protection & Policies**
+  - Enforcing code review requirements
+  - Status checks and automated validation
+  - PR automation with GitHub Apps and bots
+
+- **Building Your First CI Pipeline**
+  - YAML pipeline fundamentals
+  - Azure Pipelines vs GitHub Actions syntax
+  - Triggers, variables, and conditions
+
+- **Code Quality Integration**
+  - Static code analysis with SonarCloud
+  - Linting and code formatting checks
+  - Unit test integration and coverage gates
+
+- **Artifact Management**
+  - Publishing to Azure Artifacts and GitHub Packages
+  - Managing NuGet, npm, and container feeds
+  - Dependency scanning with Dependabot
+
+### Interactive Demo
+- Create a multi-stage CI pipeline
+- Integrate code quality tools
+- Publish artifacts to package feeds
 
 ---
 
-## Segment 3: Continuous Delivery (CD)
-- **CD Basics**
-  - Automate deployments with release pipelines and GitHub Actions.
-- **Release Pipelines**
-  - Create release pipelines in Azure DevOps.
-  - Add dev, staging, and production environments.
+## Segment 3: Advanced Pipelines & Deployment
+**Theme:** From Code to Cloud
+
+### Core Topics
+- **Multi-Stage YAML Pipelines**
+  - Environment approvals and gates
+  - Pipeline templates and reusability
+  - Matrix builds and parallel jobs
+
 - **Deployment Strategies**
-  - Demo blue-green and canary deployments.
-  - Configure rollback steps for fail-safe deployments.
+  - Blue-green deployments with slot swaps
+  - Canary releases and progressive rollouts
+  - Feature flags with Azure App Configuration
+  - A/B testing implementation
+
 - **Infrastructure as Code (IaC)**
-  - Use ARM templates, Bicep, or Terraform for automated deployments.
-- **GitHub Environments**
-  - Manage deployment stages and secrets with GitHub Environments.
-- **Interactive Demos**
-  - Deploy an app to Azure App Service using pipelines and GitHub Actions.
+  - Bicep vs Terraform decision matrix
+  - Azure Resource Manager integration
+  - Azure Deployment Environments setup
+  - Desired State Configuration patterns
+
+- **Container Deployments**
+  - Docker build optimization
+  - AKS deployment patterns
+  - Container registry management
+  - Helm chart integration
+
+- **Database Deployment Patterns**
+  - Schema migration strategies
+  - Data tier application packages (DACPAC)
+  - Entity Framework migrations in pipelines
+
+### Interactive Demo
+- Deploy app using blue-green strategy
+- Implement IaC with Bicep
+- Configure feature flags
 
 ---
 
-## Segment 4: Security, Compliance, and Monitoring
-- **DevSecOps**
-  - Shift-left security: early integration into CI/CD pipelines.
-- **Code Analysis**
-  - Use SonarCloud and GitHub Advanced Security for scans.
-- **Secure Secrets**
-  - Manage sensitive data with Azure Key Vault and GitHub Secrets.
-- **Compliance**
-  - Enforce Azure Policy and GitHub branch protection rules.
-- **Monitoring Deployments**
-  - Set up Azure Monitor and Application Insights.
-  - Add alerts and dashboards for live feedback.
-- **Feedback Loops**
-  - Track post-deployment feedback in Azure Boards and GitHub Discussions.
-- **Interactive Demos**
-  - Show a monitored deployment with live telemetry and issue tracking.
+## Segment 4: Security, Compliance & Governance
+**Theme:** Secure DevOps at Scale
+
+### Core Topics
+- **Identity & Access Management**
+  - Service Principals vs Managed Identities
+  - GitHub Apps and GITHUB_TOKEN usage
+  - Azure DevOps service connections
+  - Personal access token management
+
+- **Secrets Management**
+  - Azure Key Vault integration patterns
+  - GitHub Secrets and Azure Pipeline variables
+  - Secure file handling during deployment
+  - Preventing secret leakage in logs
+
+- **Security Scanning & Compliance**
+  - Microsoft Defender for Cloud DevOps Security
+  - GitHub Advanced Security configuration
+  - CodeQL analysis and custom queries
+  - Container image scanning automation
+
+- **Dependency Management**
+  - Dependabot alerts and auto-updates
+  - License compliance scanning
+  - Supply chain security with SBOM
+  - Vulnerability remediation workflows
+
+- **Policy Enforcement**
+  - Azure Policy integration
+  - Branch protection rules
+  - Compliance gates in pipelines
+  - Audit logging and reporting
+
+### Interactive Demo
+- Configure end-to-end security scanning
+- Implement Key Vault secret rotation
+- Set up Dependabot with auto-merge
 
 ---
 
-## Segment 5: Exam Prep and Strategy
-- **Objective Domain Overview**
-  - Recap exam topics: CI/CD, testing, artifacts, monitoring, and IaC.
-- **Practice Questions**
-  - Solve AZ-400-style case studies, drag-and-drop, and multiple-choice questions.
-- **Hands-On Labs**
-  - Explore practice labs in Microsoft Learn (CI/CD and IaC scenarios).
-- **Exam Tips**
-  - Manage time effectively; focus on key tasks during labs.
-- **Resources**
-  - Provide links to Microsoft Learn, sandbox labs, and study guides.
-- **Closing Q&A**
-  - Address final questions and ensure learners are exam-ready.
+## Segment 5: Monitoring, Feedback & Exam Prep
+**Theme:** Production Excellence & Certification
+
+### Core Topics
+- **Observability Implementation**
+  - Application Insights configuration
+  - Distributed tracing setup
+  - Custom metrics and telemetry
+  - Performance baselines
+
+- **Azure Monitor Integration**
+  - VM, Container, and Network Insights
+  - Log Analytics workspace design
+  - Alert rules and action groups
+  - Cost optimization monitoring
+
+- **KQL Fundamentals**
+  - Basic query structure
+  - Performance troubleshooting queries
+  - Creating custom dashboards
+  - Workbook design
+
+- **DevOps Metrics & KPIs**
+  - Lead time and cycle time tracking
+  - MTTR and deployment frequency
+  - Pipeline health monitoring
+  - Flaky test detection
+
+- **Continuous Improvement**
+  - Feedback loop implementation
+  - Post-incident reviews
+  - Chaos engineering basics
+  - Technical debt tracking
+
+### Exam Preparation
+- **Objective Domain Deep Dive**
+  - Weight distribution and focus areas
+  - Common question patterns
+  - Lab scenario walkthroughs
+
+- **Practice Scenarios**
+  - Multi-choice strategy questions
+  - Drag-and-drop exercises
+  - Case study analysis
+
+- **Resources & Next Steps**
+  - Microsoft Learn modules
+  - Hands-on labs
+  - Community resources
+  - Study group recommendations
+
+### Interactive Demo
+- Build monitoring dashboard
+- Analyze pipeline metrics
+- Practice exam scenario
 
 ---
 
-**Key Features**:
-- **Flow**: Logical and compact progression from foundations to advanced topics.
-- **Hands-On**: Demos in every segment using Azure DevOps and GitHub.
-- **Exam-Focused**: Ends with a dedicated segment for AZ-400 exam readiness.
+## Course Delivery Notes
+
+### Teaching Approach
+- Start simple, build complexity progressively
+- Real-world scenarios from enterprise implementations
+- Balance Azure DevOps and GitHub throughout
+- Focus on "why" before "how"
+
+### Key Differentiators
+- Modern toolchain focus (VS Code, GitHub Copilot, Cursor AI)
+- Enterprise patterns that scale
+- Security-first mindset
+- Cost-conscious implementations
+
+### Student Outcomes
+- Ready for AZ-400 certification
+- Practical skills for immediate application
+- Understanding of both platforms (Azure DevOps + GitHub)
+- Foundation for DevOps leadership roles
