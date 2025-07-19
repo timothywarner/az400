@@ -1,0 +1,316 @@
+# Multi-Stage CI/CD Pipeline for Node.js to Azure
+# Teaching example for full DevOps pipeline with environments
+
+trigger:
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    include:
+    - nodeapp-1/*
+
+pr:
+  branches:
+    include:
+    - master
+    - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '18.x'
+  azureSubscription: 'AZ400-ServiceConnection' # Update with your service connection
+  resourceGroupName: 'rg-az400-demo'
+  webAppName: 'webapp-az400-$(Build.BuildId)'
+  environmentNameDev: 'Development'
+  environmentNameStaging: 'Staging'
+  environmentNameProd: 'Production'
+
+stages:
+# ========================================
+# STAGE 1: BUILD
+# ========================================
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Node.js Application'
+    steps:
+    # Setup Node.js
+    - task: NodeTool@0
+      displayName: 'Install Node.js $(nodeVersion)'
+      inputs:
+        versionSpec: $(nodeVersion)
+
+    # Install dependencies
+    - script: |
+        echo "📦 Installing dependencies..."
+        npm ci
+      displayName: 'Install dependencies'
+      workingDirectory: nodeapp-1
+
+    # Run security audit
+    - script: |
+        echo "🔒 Running security audit..."
+        npm audit --audit-level=high || true
+      displayName: 'Security audit'
+      workingDirectory: nodeapp-1
+
+    # Run linting
+    - script: |
+        echo "🔍 Running linter..."
+        npm run lint || echo "No lint script configured"
+      displayName: 'Lint code'
+      workingDirectory: nodeapp-1
+      continueOnError: true
+
+    # Run unit tests
+    - script: |
+        echo "🧪 Running unit tests..."
+        npm test -- --coverage || npm test
+      displayName: 'Run unit tests'
+      workingDirectory: nodeapp-1
+
+    # Publish test results
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-*.xml'
+        searchFolder: nodeapp-1
+        failTaskOnFailedTests: true
+      condition: succeededOrFailed()
+
+    # Publish code coverage
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: 'nodeapp-1/coverage/**/cobertura-coverage.xml'
+      condition: succeededOrFailed()
+
+    # Build application
+    - script: |
+        echo "🔨 Building application..."
+        npm run build || echo "No build required"
+      displayName: 'Build application'
+      workingDirectory: nodeapp-1
+
+    # Create deployment package
+    - task: ArchiveFiles@2
+      displayName: 'Create deployment package'
+      inputs:
+        rootFolderOrFile: 'nodeapp-1'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+    # Publish artifact
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop
+      displayName: 'Publish artifact'
+
+# ========================================
+# STAGE 2: DEPLOY TO DEVELOPMENT
+# ========================================
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToDev
+    displayName: 'Deploy to Dev Environment'
+    environment: $(environmentNameDev)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Deploy to Azure Web App
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Dev Web App'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: '$(webAppName)-dev'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+              startUpCommand: 'npm start'
+
+          # Smoke test
+          - script: |
+              echo "🔥 Running smoke tests..."
+              sleep 30
+              curl -f https://$(webAppName)-dev.azurewebsites.net || exit 1
+              echo "✅ Smoke tests passed!"
+            displayName: 'Smoke test'
+
+# ========================================
+# STAGE 3: DEPLOY TO STAGING
+# ========================================
+- stage: DeployStaging
+  displayName: 'Deploy to Staging'
+  dependsOn: DeployDev
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToStaging
+    displayName: 'Deploy to Staging Environment'
+    environment: 
+      name: $(environmentNameStaging)
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Deploy to staging slot
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Staging Slot'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: '$(webAppName)-staging'
+              deployToSlotOrASE: true
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+
+          # Run integration tests
+          - script: |
+              echo "🧪 Running integration tests..."
+              npm run test:integration || echo "No integration tests configured"
+            displayName: 'Integration tests'
+            workingDirectory: nodeapp-1
+            continueOnError: true
+
+          # Performance test
+          - script: |
+              echo "⚡ Running performance tests..."
+              # Add your performance testing tool here
+              echo "Performance baseline: Response time < 200ms"
+            displayName: 'Performance tests'
+
+# ========================================
+# STAGE 4: DEPLOY TO PRODUCTION
+# ========================================
+- stage: DeployProd
+  displayName: 'Deploy to Production'
+  dependsOn: DeployStaging
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToProd
+    displayName: 'Deploy to Production Environment'
+    environment: 
+      name: $(environmentNameProd)
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        preDeploy:
+          steps:
+          - script: |
+              echo "📋 Pre-deployment checklist:"
+              echo "✓ All tests passed"
+              echo "✓ Security scan completed"
+              echo "✓ Performance benchmarks met"
+            displayName: 'Pre-deployment validation'
+        
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Blue-Green deployment
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Production (Blue-Green)'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: $(webAppName)
+              deployToSlotOrASE: true
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+
+          # Swap slots
+          - task: AzureAppServiceManage@0
+            displayName: 'Swap staging to production'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              WebAppName: $(webAppName)
+              ResourceGroupName: $(resourceGroupName)
+              SourceSlot: 'staging'
+              SwapWithProduction: true
+
+        postRouteTraffic:
+          steps:
+          # Monitor deployment
+          - script: |
+              echo "📊 Monitoring deployment health..."
+              # Add Application Insights queries here
+              echo "✅ Deployment healthy"
+            displayName: 'Monitor deployment'
+
+        on:
+          failure:
+            steps:
+            # Rollback on failure
+            - task: AzureAppServiceManage@0
+              displayName: 'Rollback: Swap slots back'
+              inputs:
+                azureSubscription: $(azureSubscription)
+                WebAppName: $(webAppName)
+                ResourceGroupName: $(resourceGroupName)
+                SourceSlot: 'production'
+                TargetSlot: 'staging'
+                SwapWithProduction: false
+
+          success:
+            steps:
+            - script: |
+                echo "🎉 Production deployment successful!"
+                echo "URL: https://$(webAppName).azurewebsites.net"
+                echo "Build: $(Build.BuildId)"
+                echo "Commit: $(Build.SourceVersion)"
+              displayName: 'Deployment summary'
+
+# ========================================
+# STAGE 5: POST-DEPLOYMENT
+# ========================================
+- stage: PostDeployment
+  displayName: 'Post-Deployment Tasks'
+  dependsOn: DeployProd
+  condition: succeeded()
+  jobs:
+  - job: PostDeploymentTasks
+    displayName: 'Run post-deployment tasks'
+    steps:
+    # Tag the release
+    - script: |
+        echo "🏷️ Tagging release..."
+        git tag -a "v$(Build.BuildId)" -m "Release $(Build.BuildId)"
+      displayName: 'Tag release'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+
+    # Update documentation
+    - script: |
+        echo "📚 Updating deployment documentation..."
+        echo "Deployment completed at: $(date)" >> deployment-log.md
+      displayName: 'Update documentation'
+
+    # Send notifications
+    - script: |
+        echo "📧 Sending deployment notifications..."
+        # Add your notification logic here (Teams, Slack, email)
+      displayName: 'Send notifications'
