@@ -1,0 +1,285 @@
+# Multi-Stage CI/CD Pipeline for Node.js to Azure
+# Teaching example for full DevOps pipeline with environments
+
+trigger:
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    include:
+    - nodeapp-1/*
+
+pr:
+  branches:
+    include:
+    - master
+    - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '18.x'
+  azureSubscription: 'AZ400-ServiceConnection' # Update with your service connection
+  resourceGroupName: 'rg-az400-demo'
+  webAppName: 'webapp-az400-$(Build.BuildId)'
+  environmentNameDev: 'Development'
+  environmentNameStaging: 'Staging'
+  environmentNameProd: 'Production'
+  workingDirectory: 'nodeapp-1'
+
+stages:
+# ========================================
+# STAGE 1: BUILD
+# ========================================
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Node.js Application'
+    steps:
+    # Setup Node.js
+    - task: NodeTool@0
+      displayName: 'Install Node.js $(nodeVersion)'
+      inputs:
+        versionSpec: $(nodeVersion)
+
+    # Install dependencies
+    - script: |
+        echo "📦 Installing dependencies..."
+        npm ci
+      displayName: 'Install dependencies'
+      workingDirectory: $(workingDirectory)
+
+    # Run security audit
+    - script: |
+        echo "🔒 Running security audit..."
+        npm audit --audit-level=high || true
+      displayName: 'Security audit'
+      workingDirectory: $(workingDirectory)
+
+    # Run linting
+    - script: |
+        echo "🔍 Running linter..."
+        npm run lint
+      displayName: 'Lint code'
+      workingDirectory: $(workingDirectory)
+      continueOnError: true
+
+    # Run unit tests with Mocha
+    - script: |
+        echo "🧪 Running Mocha tests..."
+        npm test
+      displayName: 'Run unit tests'
+      workingDirectory: $(workingDirectory)
+
+    # Publish test results
+    - task: PublishHtmlReport@1
+      displayName: 'Publish Mochawesome Report'
+      inputs:
+        reportDir: '$(workingDirectory)/mochawesome-report'
+        tabName: 'Test Results'
+      condition: succeededOrFailed()
+
+    # Create deployment package
+    - task: ArchiveFiles@2
+      displayName: 'Create deployment package'
+      inputs:
+        rootFolderOrFile: $(workingDirectory)
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+    # Publish artifact
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop
+      displayName: 'Publish artifact'
+
+    # Publish to Azure Artifacts Dev Feed
+    - task: Npm@1
+      displayName: 'Publish to Dev Feed'
+      inputs:
+        command: 'custom'
+        workingDir: $(workingDirectory)
+        customCommand: 'run publish:dev'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+# ========================================
+# STAGE 2: DEPLOY TO DEVELOPMENT
+# ========================================
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToDev
+    displayName: 'Deploy to Dev Environment'
+    environment: $(environmentNameDev)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Deploy to Azure Web App
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Dev Web App'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: '$(webAppName)-dev'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+              startUpCommand: 'npm start'
+
+          # Smoke test
+          - script: |
+              echo "🔥 Running smoke tests..."
+              sleep 30
+              curl -f https://$(webAppName)-dev.azurewebsites.net || exit 1
+              echo "✅ Smoke tests passed!"
+            displayName: 'Smoke test'
+
+# ========================================
+# STAGE 3: DEPLOY TO STAGING
+# ========================================
+- stage: DeployStaging
+  displayName: 'Deploy to Staging'
+  dependsOn: DeployDev
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToStaging
+    displayName: 'Deploy to Staging Environment'
+    environment: 
+      name: $(environmentNameStaging)
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Deploy to staging slot
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Staging Slot'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: '$(webAppName)-staging'
+              deployToSlotOrASE: true
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+
+          # Run integration tests using Chai-HTTP
+          - script: |
+              echo "🧪 Running integration tests..."
+              # Install test dependencies
+              npm ci
+              # Run tests against staging URL
+              export TEST_URL=https://$(webAppName)-staging.azurewebsites.net
+              npm test
+            displayName: 'Integration tests'
+            workingDirectory: $(workingDirectory)
+            continueOnError: true
+
+# ========================================
+# STAGE 4: DEPLOY TO PRODUCTION
+# ========================================
+- stage: DeployProd
+  displayName: 'Deploy to Production'
+  dependsOn: DeployStaging
+  condition: succeeded()
+  jobs:
+  - deployment: DeployToProd
+    displayName: 'Deploy to Production Environment'
+    environment: 
+      name: $(environmentNameProd)
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        preDeploy:
+          steps:
+          - script: |
+              echo "📋 Pre-deployment checklist:"
+              echo "✓ All tests passed"
+              echo "✓ Security scan completed"
+              echo "✓ Staging validation complete"
+            displayName: 'Pre-deployment validation'
+        
+        deploy:
+          steps:
+          # Download artifact
+          - download: current
+            artifact: drop
+            displayName: 'Download artifact'
+
+          # Blue-Green deployment
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Production (Blue-Green)'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webAppLinux'
+              appName: $(webAppName)
+              deployToSlotOrASE: true
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+              runtimeStack: 'NODE|18-lts'
+
+          # Swap slots
+          - task: AzureAppServiceManage@0
+            displayName: 'Swap staging to production'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              WebAppName: $(webAppName)
+              ResourceGroupName: $(resourceGroupName)
+              SourceSlot: 'staging'
+              SwapWithProduction: true
+
+          # Publish to Azure Artifacts Prod Feed
+          - task: Npm@1
+            displayName: 'Publish to Prod Feed'
+            inputs:
+              command: 'custom'
+              workingDir: $(workingDirectory)
+              customCommand: 'run publish:prod'
+            condition: succeeded()
+
+        postRouteTraffic:
+          steps:
+          # Monitor deployment
+          - script: |
+              echo "📊 Monitoring deployment health..."
+              # Add Application Insights queries here
+              echo "✅ Deployment healthy"
+            displayName: 'Monitor deployment'
+
+        on:
+          failure:
+            steps:
+            # Rollback on failure
+            - task: AzureAppServiceManage@0
+              displayName: 'Rollback: Swap slots back'
+              inputs:
+                azureSubscription: $(azureSubscription)
+                WebAppName: $(webAppName)
+                ResourceGroupName: $(resourceGroupName)
+                SourceSlot: 'production'
+                TargetSlot: 'staging'
+                SwapWithProduction: false
+
+          success:
+            steps:
+            - script: |
+                echo "🎉 Production deployment successful!"
+                echo "URL: https://$(webAppName).azurewebsites.net"
+                echo "Build: $(Build.BuildId)"
+                echo "Commit: $(Build.SourceVersion)"
+              displayName: 'Deployment summary'

@@ -1,0 +1,97 @@
+# Single-Stage CI Pipeline for Node.js
+# Teaching example for basic continuous integration
+
+trigger:
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    include:
+    - nodeapp-1/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '18.x'
+  artifactName: 'drop'
+  workingDirectory: 'nodeapp-1'
+
+steps:
+# Step 1: Setup Node.js environment
+- task: NodeTool@0
+  displayName: 'Install Node.js $(nodeVersion)'
+  inputs:
+    versionSpec: $(nodeVersion)
+
+# Step 2: Install dependencies
+- script: |
+    echo "Installing npm dependencies..."
+    npm ci
+  displayName: 'npm install'
+  workingDirectory: $(workingDirectory)
+
+# Step 3: Run linting
+- script: |
+    echo "Running ESLint..."
+    npm run lint
+  displayName: 'Run linting'
+  workingDirectory: $(workingDirectory)
+  continueOnError: true
+
+# Step 4: Run unit tests with Mocha
+- script: |
+    echo "Running Mocha tests..."
+    npm test
+  displayName: 'Run unit tests'
+  workingDirectory: $(workingDirectory)
+
+# Step 5: Publish test results (mochawesome generates HTML reports)
+- task: PublishHtmlReport@1
+  displayName: 'Publish Mochawesome Report'
+  inputs:
+    reportDir: '$(workingDirectory)/mochawesome-report'
+    tabName: 'Test Results'
+  condition: succeededOrFailed()
+
+# Step 6: Security audit
+- script: |
+    echo "Running npm audit..."
+    npm audit --audit-level=high
+  displayName: 'Security audit'
+  workingDirectory: $(workingDirectory)
+  continueOnError: true
+
+# Step 7: Create artifact (no build step - it's a runtime app)
+- task: ArchiveFiles@2
+  displayName: 'Archive application files'
+  inputs:
+    rootFolderOrFile: $(workingDirectory)
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+# Step 8: Publish artifact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: $(artifactName)
+    publishLocation: 'Container'
+
+# Step 9: Publish to Azure Artifacts (optional)
+- script: |
+    echo "Ready to publish to Azure Artifacts feed"
+    echo "Use: npm run publish:dev or npm run publish:prod"
+  displayName: 'Azure Artifacts info'
+  condition: succeeded()
+
+# Success notification
+- script: |
+    echo "✅ Build completed successfully!"
+    echo "Build ID: $(Build.BuildId)"
+    echo "Source branch: $(Build.SourceBranch)"
+    echo "Commit: $(Build.SourceVersion)"
+  displayName: 'Build summary'
+  condition: succeeded()
