@@ -16,6 +16,7 @@
 			}
 		},
 		"terminal.integrated.defaultProfile.windows": "PowerShell (Admin)",
-		"dotnet.defaultSolution": "disable"
+		"dotnet.defaultSolution": "disable",
+		"sarif-viewer.connectToGithubCodeScanning": "off"
 	}
 }
