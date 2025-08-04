@@ -1,4 +1,4 @@
-# Exam AZ-400: Microsoft Azure DevOps Solutions - Live Learning Course
+# Exam AZ-400: Microsoft Azure DevOps Solutions - Live Learning Course (please remove this after class, tim)
 
 **📅 Updated for August 2025 Delivery - Hybrid Azure DevOps & GitHub Enterprise Cloud**
 
